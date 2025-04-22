@@ -1,0 +1,11 @@
+last = Luxury_Escapes_1[ID != 0] sort by Added_Time DESC range from 1 to 1;
+if(last.Bid_ID == "" || last.Bid_ID == null || !isNumber(last.Bid_ID))
+{
+	input.Bid_ID = "10000";
+}
+else
+{
+	data = last.Bid_ID.toDecimal() + 1;
+	input.Bid_ID = data.toString();
+}
+disable Bid_ID;

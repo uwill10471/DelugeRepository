@@ -1,0 +1,53 @@
+if(Vendor_Name != null && input.PO_No != null)
+{
+	ItemsList = List();
+	vendorID = input.Vendor_Name.Vendor_ID;
+	for each  item in Item_Details
+	{
+		itemMap = Map();
+		itemMap.put("name",item.Item_Name.Product_Name);
+		itemMap.put("item_id",item.Item_Name.Item_ID);
+		itemMap.put("quantity",ifnull(item.Quantity,1));
+		itemMap.put("description",ifnull(item.Description,""));
+		itemMap.put("rate",ifnull(item.Rate,1));
+		// 				itemMap.put("discount",ifnull(item.Discount,0) + "%");
+		// 				if(ifnull(orderItem.get("Tax_Preference"),"") == "Standard Rate 5%")
+		// 				{
+		// 					itemMap.put("tax_id",Standard_Rate);
+		// 				}
+		// 				if(ifnull(orderItem.get("Tax_Preference"),"") == "Zero Rate 0%")
+		// 				{
+		// 					itemMap.put("tax_id",Zero_Rate);
+		// 				}
+		// 				if(ifnull(orderItem.get("Tax_Preference"),"") == "Exempt")
+		// 				{
+		// 					itemMap.put("tax_exemption_id",EXEMPT);
+		// 				}
+		// 				if(ifnull(orderItem.get("Tax_Preference"),"") == "Out of Sope")
+		// 				{
+		// 					itemMap.put("tax_exemption_id","4746814000000089026");
+		// 					itemMap.put("tax_exemption_code","OUTOFSCOPE");
+		// 					itemMap.put("tax_treatment_code","uae_others");
+		// 				}
+		itemMap.put("item_custom_fields",{{"label":"Brand","value":ifnull(item.Brand,"")},{"label":"Manufacturer","value":ifnull(item.Manufacturer,"")}});
+		ItemsList.add(itemMap);
+	}
+	InvoiceMap = Map();
+	InvoiceMap.put("vendor_id",vendorID);
+	InvoiceMap.put("line_items",ItemsList);
+	// 	InvoiceMap.put("salesperson_name",data.get("Owner").get("name"));
+	// 	InvoiceMap.put("subject_content",ifnull(data.get("Subject"),""));
+	// 	InvoiceMap.put("terms",ifnull(data.get("Terms_and_Conditions"),""));
+	// 	InvoiceMap.put("notes",ifnull(data.get("Description"),""));
+	InvoiceMap.put("custom_fields",{{"customfield_id":"321462200009619029","value":ifnull(input.Requisition_No.Requisition_No,"")}});
+	purchaseOrderResponse = zoho.books.createRecord("purchaseorders","orgid",InvoiceMap,"bookconnection");
+	// 	PO = ifnull(purchaseOrderResponse.getJSON("purchaseorder"),null);
+	// 	po_id = ifnull(PO.getJSON("purchaseorder_id"),null);
+	// 	po_no = ifnull(PO.getJSON("purchaseorder_number"),null);
+	// 	if(po_no != null)
+	// 	{
+	// 		info "PO created with PO No. " + po_no;
+	// 		input.PO_No = po_no;
+	// 	}
+	info purchaseOrderResponse;
+}

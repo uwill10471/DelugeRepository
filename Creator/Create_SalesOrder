@@ -1,0 +1,182 @@
+CustomerName = input.Customer_Name;
+custdata = Add_Customer[ID == CustomerName];
+Customer_ID = ifnull(custdata.Customer_ID,null);
+mapp = Map();
+arraylist = list();
+for each  ele in input.Inventory_Items
+{
+	lineitemmap = Map();
+	lineitemmap.put("item_id",ifnull(ele.Product_Name.Item_ID,null));
+	lineitemmap.put("rate",ifnull(ele.Unit_Price,null));
+	lineitemmap.put("quantity",ifnull(ele.Quantity,null));
+	lineitemmap.put("item_total",ifnull(ele.Total_Price,null));
+	arraylist.add(lineitemmap);
+}
+mapp.put("customer_id",Customer_ID);
+mapp.put("line_items",arraylist);
+mapp.put("date",ifnull(input.Sales_Order_Date,null));
+mapp.put("salesorder_number",ifnull(input.Sales_Order_No,null));
+mapp.put("shipment_date",ifnull(input.Expected_Shipment_Date,null));
+mapp.put("reference_number",ifnull(input.Reference_No,null));
+mapp.put("delivery_method",ifnull(input.Delivery_Method,null));
+mapp.put("salesperson_name",ifnull(input.Sales_Person.Sales_Person_Name,null));
+mapp.put("purchaseorders",ifnull(input.Client_Purchase_Order,null));
+mapp.put("payment_terms_label",ifnull(input.Payment_Terms2,null));
+mapp.put("notes",ifnull(input.Customer_Note,null));
+mapp.put("terms",ifnull(input.Terms_Conditions,null));
+// Custom fields section with null checks
+customFieldList = List();
+if(input.Payment_Terms != null)
+{
+	m = Map();
+	m.put("api_name","cf_payment_terms");
+	m.put("value",input.Payment_Terms);
+	customFieldList.add(m);
+}
+if(input.Project_Code != null)
+{
+	m = Map();
+	m.put("api_name","cf_project_number");
+	m.put("value",input.Project_Code);
+	customFieldList.add(m);
+}
+if(input.Division != null)
+{
+	m = Map();
+	m.put("api_name","cf_division");
+	m.put("value",input.Division);
+	customFieldList.add(m);
+}
+if(input.Service_Type != null)
+{
+	m = Map();
+	m.put("api_name","cf_service_type");
+	m.put("value",input.Service_Type);
+	customFieldList.add(m);
+}
+if(input.Total_Sales_Value != null)
+{
+	m = Map();
+	m.put("api_name","cf_total_sales_value");
+	m.put("value",input.Total_Sales_Value);
+	customFieldList.add(m);
+}
+if(input.PTI != null)
+{
+	m = Map();
+	m.put("api_name","cf_pti");
+	m.put("value",input.PTI);
+	customFieldList.add(m);
+}
+if(input.File_upload != null)
+{
+	m = Map();
+	m.put("api_name","cf_file");
+	m.put("value",input.File_upload);
+	customFieldList.add(m);
+}
+if(input.Client_Purchase_Order != null)
+{
+	m = Map();
+	m.put("api_name","cf_client_purchase_order");
+	m.put("value",input.Client_Purchase_Order);
+	customFieldList.add(m);
+}
+if(input.SV_Final_Offer != null)
+{
+	m = Map();
+	m.put("api_name","cf_sv_final_offer");
+	m.put("value",input.SV_Final_Offer);
+	customFieldList.add(m);
+}
+if(input.Performance_Bond != null)
+{
+	m = Map();
+	m.put("api_name","cf_performance_bond");
+	m.put("value",input.Performance_Bond);
+	customFieldList.add(m);
+}
+if(input.Project_Manager != null)
+{
+	m = Map();
+	m.put("api_name","cf_project_manager");
+	m.put("value",input.Project_Manager);
+	customFieldList.add(m);
+}
+if(input.Revenue_type != null)
+{
+	m = Map();
+	m.put("api_name","cf_revenue_type");
+	m.put("value",input.Revenue_type);
+	customFieldList.add(m);
+}
+if(input.RA != null)
+{
+	m = Map();
+	m.put("api_name","cf_ra");
+	m.put("value",input.RA);
+	customFieldList.add(m);
+}
+if(input.Total_Cost != null)
+{
+	m = Map();
+	m.put("api_name","cf_total_cost");
+	m.put("value",input.Total_Cost);
+	customFieldList.add(m);
+}
+if(input.CRM_Deal_ID != null)
+{
+	m = Map();
+	m.put("api_name","cf_crm_deal_id");
+	m.put("value",input.CRM_Deal_ID);
+	customFieldList.add(m);
+}
+if(input.Client_Final_Contract != null)
+{
+	m = Map();
+	m.put("api_name","cf_client_final_contract");
+	m.put("value",input.Client_Final_Contract);
+	customFieldList.add(m);
+}
+if(input.Award_Costing_Sheet != null)
+{
+	m = Map();
+	m.put("api_name","cf_award_costing_sheet");
+	m.put("value",input.Award_Costing_Sheet);
+	customFieldList.add(m);
+}
+if(input.Product != null)
+{
+	m = Map();
+	m.put("api_name","cf_product");
+	m.put("value",input.Product);
+	customFieldList.add(m);
+}
+if(input.Currency_Bank_Details != null)
+{
+	m = Map();
+	m.put("api_name","cf_bank_details");
+	m.put("value",input.Currency_Bank_Details);
+	customFieldList.add(m);
+}
+// Attach custom fields to main request map
+mapp.put("custom_fields",customFieldList);
+// Create the sales order record
+createInvoice_Book = zoho.books.createRecord("salesorders","84582",mapp,"bookconnection");
+// info createInvoice_Book;
+// // fileres = invokeurl
+// // [
+// // 	url :"https://www.zohoapis.com/creator/v2.1/data/jason18/zylker-store/report/Inventory_Report/3888834000000114050/Product_Manual/download"
+// // 	type :GET
+// // ];
+// fileres = input.File_upload;
+// booksres = invokeUrl
+// [
+// 	url: "https://www.zohoapis.com/books/v3/"
+// 	type: <request_type>
+// 	parameters: <expression>
+// 	headers: <expression>
+// 	connection: <connection>
+// ];
+// info response;
+info "Sales Order Created Successfully";
