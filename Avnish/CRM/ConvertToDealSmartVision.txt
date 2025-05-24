@@ -1,0 +1,263 @@
+res = zoho.crm.getRecordById("Leads",id);
+deal_id = res.get("Deal_ID");
+dealStatus = res.get("Lead_Status");
+//info dealStatus;
+//info deal_id;
+// if(dealStatus != "Converted to Opportunity")
+// {
+// 	if(deal_id == null || deal_id == "")
+// 	{
+if(true)
+{
+	if(true)
+	{
+		if(res.get("Approve_Lead_and_Move_to_Opportunity") == "Approved")
+		{
+			Document_Reference_Number = res.get("Document_Reference_Number");
+			Description = res.get("Description");
+			Type = res.get("Type");
+			Industry_Name = res.get("Industry_Name");
+			Account_Type = res.get("Account_Type");
+			Digital_Touch_Point = res.get("Digital_Touch_Point");
+			Digital_Touch_Point_Link = res.get("Digital_Touch_Point_Link");
+			RFP_No = Document_Reference_Number;
+			Name_of_Referral_Employer = res.get("Name_of_Referral_Employer");
+			RFP_RFI_Subject = res.get("RFP_RFI_Subject");
+			Publish_Date = res.get("Publish_Date");
+			Tradeshow = res.get("Tradeshow");
+			Closing_Date = res.get("Closing_Date");
+			Message_From_Digital_Touch_Point = res.get("Message_From_Digital_Touch_Point");
+			Specify_The_Sales_Activity = res.get("Specify_The_Sales_Activity");
+			Marketing_Events = res.get("Marketing_Events");
+			Products_In_RFQ = res.get("Products_In_RFQ");
+			Email = res.get("Email");
+			Account_Manager = res.get("Account_Manager");
+			Contact_Person = res.get("Contact_Person");
+			Lead_Date = res.get("Lead_Date");
+			Lead_Type = res.get("Lead_Type");
+			Tender_Value2 = res.get("Tender_Value2");
+			Lead_Status = "Converted to Opportunity";
+			updateLeadMap = Map();
+			updateLeadMap.put("Lead_Status",Lead_Status);
+			updateStatus = zoho.crm.updateRecord("Leads",id,updateLeadMap);
+			if(Account_Manager != null)
+			{
+				Account_ManagerID = Account_Manager.get("id");
+			}
+			if(Contact_Person != null)
+			{
+				Contact_PersonID = Contact_Person.get("id");
+			}
+			Lead_Id = res.get("Lead_ID");
+			Departments = res.get("Departments");
+			if(Departments != null)
+			{
+				DepartmentsID = Departments.get("id");
+			}
+			if(DepartmentsID != null)
+			{
+				data = zoho.crm.getRecordById("Accounts",DepartmentsID);
+			}
+			Tender_Name = res.get("Tender_Name");
+			zohoworkdriveforcrm__Workdrive_Folder_ID = res.get("zohoworkdriveforcrm_Workdrive_Folder_ID");
+			Date = zoho.currentdate;
+			if(zohoworkdriveforcrm__Workdrive_Folder_ID == null)
+			{
+				folderName = "(" + Tender_Name + " " + Date + ")";
+				create = zoho.workdrive.createFolder(folderName,"ldg4k45226fddd1854956a7fb96a08ac81785","workdrive");
+				//info create;
+				if(create != null && create.get("data") != null)
+				{
+					data = create.get("data");
+					subfolder_id = data.get("id");
+					permalink = data.get("attributes").get("permalink");
+					//info permalink;
+					subfolder_names = {"Client Purchase Order Document","Client Final Contract Document","SV Final Offer Document","Award Costing Sheet Document","Performance Bond Documents","Vendors' Offers Documents","RFP/RFI Documents","Customer PO Copy","Proposal1"};
+					for each  subfolder_name in subfolder_names
+					{
+						create_subfolder = zoho.workdrive.createFolder(subfolder_name,subfolder_id,"workdrive");
+						if(create_subfolder != null)
+						{
+							subfolder_data = create_subfolder.get("data");
+							if(subfolder_data.get("attributes").get("name") == "Proposal1")
+							{
+								Proposal_url = subfolder_data.get("attributes").get("permalink");
+							}
+							if(subfolder_data.get("attributes").get("name") == "Client Final Contract Document")
+							{
+								Client_Final_Contract_Document_Folder_ID = subfolder_data.get("id");
+							}
+							if(subfolder_data.get("attributes").get("name") == "Client Purchase Order Document")
+							{
+								Client_Purchase_Order_Document_Folder_ID = subfolder_data.get("id");
+							}
+							if(subfolder_data.get("attributes").get("name") == "SV Final Offer Document")
+							{
+								SV_Final_Offer_Document_Folder_ID = subfolder_data.get("id");
+							}
+							if(subfolder_data.get("attributes").get("name") == "Award Costing Sheet Document")
+							{
+								Award_Costing_Sheet_Document_Folder_ID = subfolder_data.get("id");
+							}
+							if(subfolder_data.get("attributes").get("name") == "Performance Bond Documents")
+							{
+								Performance_Bond_Documents_Folder_ID = subfolder_data.get("id");
+							}
+							if(subfolder_data.get("attributes").get("name") == "Vendors' Offers Documents")
+							{
+								Vendors_Offers_Documents_Folder_ID = subfolder_data.get("id");
+							}
+							if(subfolder_data.get("attributes").get("name") == "RFP/RFI Documents")
+							{
+								RFP_RFI_Documents_Folder_ID = subfolder_data.get("id");
+							}
+							if(subfolder_data.get("attributes").get("name") == "Customer PO Copy")
+							{
+								Customer_PO_Copy_Folder_ID = subfolder_data.get("id");
+							}
+						}
+					}
+					dataMap = Map();
+					dataMap.put("zohoworkdriveforcrm_Workdrive_Folder_ID",subfolder_id);
+					dataMap.put("Folder_url",permalink);
+					dataMap.put("Publish_Date",Publish_Date);
+					dataMap.put("Types",Type);
+					dataMap.put("Digital_Touch_Point_Link",Digital_Touch_Point_Link);
+					dataMap.put("Proposal_1_Folder_URL",Proposal_url);
+					dataMap.put("Client_Final_Contract_Document_Folder_ID",Client_Final_Contract_Document_Folder_ID);
+					dataMap.put("Client_Purchase_Order_Document_Folder_ID",Client_Purchase_Order_Document_Folder_ID);
+					dataMap.put("SV_Final_Offer_Document_Folder_ID",SV_Final_Offer_Document_Folder_ID);
+					dataMap.put("Award_Costing_Sheet_Document_Folder_ID",Award_Costing_Sheet_Document_Folder_ID);
+					dataMap.put("Performance_Bond_Documents_Folder_ID",Performance_Bond_Documents_Folder_ID);
+					dataMap.put("Vendors_Offers_Documents_Folder_ID",Vendors_Offers_Documents_Folder_ID);
+					dataMap.put("RFP_RFI_Documents_Folder_ID",RFP_RFI_Documents_Folder_ID);
+					dataMap.put("Customer_PO_Copy_Folder_ID",Customer_PO_Copy_Folder_ID);
+					dataMap.put("TCV_1",0);
+					dataMap.put("PTI_1",0);
+					dataMap.put("RA_1",0);
+					dataMap.put("Total_Cost_1",0);
+					dataMap.put("zohoworkdriveforcrm__Workdrive_Folder_URL",permalink);
+					dataMap.put("Lead_Source",Lead_Type);
+					dataMap.put("RFP_RFI_Number",RFP_No);
+					dataMap.put("Digital_Touch_point",Digital_Touch_Point);
+					dataMap.put("Tradeshow",Tradeshow);
+					dataMap.put("Email",Email);
+					dataMap.put("Annual_revenue",Tender_Value2);
+					dataMap.put("Contact_Person",Contact_PersonID);
+					dataMap.put("Stage","Prospect");
+					dataMap.put("Account_Manager",Account_ManagerID);
+					dataMap.put("Account_Name",Departments);
+					dataMap.put("Deal_Name",Tender_Name);
+					dataMap.put("Lead_ID",Lead_Id);
+					dataMap.put("Lead_Date",Lead_Date);
+					dataMap.put("Lead_Type",Lead_Type);
+					dataMap.put("Description",Description);
+					dataMap.put("Solution_to_be_Proposed",Products_In_RFQ);
+					dataMap.put("RFP_RFI_Subject",RFP_RFI_Subject);
+					dataMap.put("Closing_Date",Closing_Date);
+					dataMap.put("Message_From_Digital_Touch_Point",Message_From_Digital_Touch_Point);
+					dataMap.put("Specify_The_Sales_Activity",Specify_The_Sales_Activity);
+					dataMap.put("Marketing_Events",Marketing_Events);
+					dataMap.put("Name_of_Referral_Employer",Name_of_Referral_Employer);
+					dataMap.put("Opportunity_Description",Description);
+					dataMap.put("Account_Type",Account_Type);
+					dataMap.put("Industry",Industry_Name);
+					// 					map for defaul approvals 
+					dataMap.put("Approval_from_SD_for_Proposal","Approved");
+					dataMap.put("Approval_from_CEO_for_Proposal","Approved");
+					dataMap.put("Approval_from_CEO_for_Technically_Qualified","Approved");
+					dataMap.put("Approval_from_SD_for_Technically_Qualified","Approved");
+					dataMap.put("Approval_from_CEO_for_Negotiations","Approved");
+					dataMap.put("Approval_from_SD_for_Negotiations","Approved");
+					createRecord = zoho.crm.createRecord("Deals",dataMap,{"trigger":{"workflow","blueprint","approval"}});
+					DealId = createRecord.get("id");
+					upmap = Map();
+					upmap.put("Opportunity_URL","https://crm.zoho.com/crm/org861138864/tab/Potentials/" + DealId + "/canvas/6408601000004851005");
+					updateStatuss = zoho.crm.updateRecord("Leads",id,upmap);
+					if(DealId != null)
+					{
+						// =============== Fetch Access Token for ZFS Upload ===============
+						client_id = "1000.JR4MP9SE1PG2A7A89U642VW1ZICUKD";
+						client_secret = "878684d15bea46648c71f81c50bd439060a15f0a1d";
+						refresh_token = "1000.564633367bd5b07220135cb534917110.5f733196c00a544cc51d52dec251381a";
+						refreshUrl = "https://accounts.zoho.com/oauth/v2/token?grant_type=refresh_token&client_id=" + client_id + "&client_secret=" + client_secret + "&refresh_token=" + refresh_token;
+						tokenResponse = invokeurl
+						[
+							url :refreshUrl
+							type :POST
+						];
+						access_token = tokenResponse.get("access_token");
+						if(access_token == null || access_token.isEmpty())
+						{
+							info "❌ Failed to fetch access token";
+						}
+						headers = Map();
+						headers.put("Authorization","Zoho-oauthtoken " + access_token);
+						headers.put("X-com-zoho-crm-scope","ZohoCRM.Files.CREATE");
+						files = res.get("Attchments");
+						if(files != null && files.size() > 0)
+						{
+							for each  f in files
+							{
+								file_id = f.get("attachment_Id");
+								fileDownloadResponse = invokeurl
+								[
+									url :"https://www.zohoapis.com/crm/v7/Leads/" + id + "/Attachments/" + file_id
+									type :GET
+									headers:headers
+									connection:"crm"
+								];
+								if(isfile(fileDownloadResponse))
+								{
+									fileDownloadResponse.setParamName("file");
+									zfsUploadResponse = invokeurl
+									[
+										url :"https://www.zohoapis.com/crm/v7/files"
+										type :POST
+										headers:headers
+										files:fileDownloadResponse
+									];
+									file_id_encrypted = zfsUploadResponse.get("data").get(0).get("details").get("id");
+									fileUploadMap = Map();
+									fileUploadMap.put("Attachments",{{"file_id":file_id_encrypted}});
+									attachResponse = zoho.crm.updateRecord("Deals",DealId,fileUploadMap);
+								}
+								// =============== Unique Opportunity ID Generation ===============
+								res = zoho.crm.getRecordById("Deals",DealId);
+								Opportunity_ID = res.get("Opportunity_ID");
+								Auto_Opportunity_No = res.get("Opportunity_No");
+								countryName = res.get("Country");
+								data = zoho.crm.searchRecords("Country","(Name:equals:" + countryName + ")");
+								Country_Code = data.getJSON("Country_Code");
+								uniqueId = zoho.currentdate.toString("yy");
+								CreateUNiqID = "SV" + Country_Code + Auto_Opportunity_No + "-" + uniqueId;
+								// .toString("yyyyMMddHHmmss");
+								updateMap = Map();
+								updateMap.put("Opportunity_ID",CreateUNiqID);
+								response = zoho.crm.updateRecord("Deals",DealId,updateMap);
+								info response;
+							}
+						}
+						info "✅ Conversion and attachment upload successful.";
+					}
+					else
+					{
+						info "❌ Deal creation failed.";
+					}
+				}
+				else
+				{
+					info "❌ WorkDrive folder creation failed.";
+				}
+			}
+			else
+			{
+				info "⚠️ WorkDrive Folder already exists. Skipping creation.";
+			}
+		}
+		else
+		{
+			info "❌ Lead not approved.";
+		}
+	}
+}

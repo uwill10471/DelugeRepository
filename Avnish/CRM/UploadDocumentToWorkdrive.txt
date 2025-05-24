@@ -1,0 +1,635 @@
+params = Map();
+params.put("organization_id",859704582);
+info "ID =================> " + id;
+// params.put("salesperson_name","raed Masadeh");
+salesPersonList = invokeurl
+[
+	url :"https://books.zoho.com/api/v3/salespersons"
+	type :GET
+	parameters:params
+	connection:"zohobooks"
+];
+// info salesPersonList;
+// getRecord = zoho.books.getRecordsByID("items", "859704582", "5443013000002394007", "zohobooks");
+// info getRecord;
+// getRec = zoho.books.getRecordsByID("salesorders", "859704582", 5443013000002722017, "zohobooks");
+// info getRec;
+// id = "6408601000006234004";
+orgId = "859704582";
+grec = zoho.crm.getRecordById("Deals",id.toLong());
+Opportunity_ID1 = grec.get("Opportunity_ID");
+info Opportunity_ID1;
+// info grec;
+// if(grec.get("Account_Manager") != null && !grec.get("Account_Manager").isEmpty())
+// {
+// 	Account_Manager_Name = grec.get("Account_Manager").get("name");
+// 	info Account_Manager_Name;
+// 	for each  salesPerson in salesPersonList.get("data")
+// 	{
+// //         info "-> " + salesPerson;
+// 		salesperson_name = salesPerson.get("salesperson_name");
+// // 		firstHalf_salesPerson = salesperson_name.getPrefix(" ");
+// 		firstName_AccountManager = Account_Manager_Name.getPrefix(" ");
+//         info "----------------------------------------------------------------------";
+// 		info "Account_Manager_Name -> " + Account_Manager_Name;
+// 		info "salesperson_name -> " + salesperson_name;
+// 		info "firstName_AccountManager -> " + firstName_AccountManager;
+// // 		info "firstHalf_salesPerson -> " + firstHalf_salesPerson;
+// 		if(salesperson_name.toLowerCase() == firstName_AccountManager.toLowerCase())
+// 		{
+// //    info "Inside";
+// 			salesperson_id = salesPerson.get("salesperson_id");
+// 			new_map.put("salesperson_id",salesperson_id);
+// 		}
+// 	}
+// }
+Deal_Date = grec.get("Deal_Date");
+Opportunity_ID = grec.get("Opportunity_ID");
+Customer_PO_Number = grec.get("Customer_PO_Number");
+Cutomer_PO_Date = grec.get("Cutomer_PO_Date");
+Promised_Delivery_Date = grec.get("Promised_Delivery_Date");
+TCV = grec.get("TCV");
+Total_Cost = grec.get("Total_Cost");
+RA = grec.get("RA");
+PTI = grec.get("PTI");
+// RA% 
+Project_Revenue_Type = grec.get("Project_Revenue_Type");
+Opportunity_Description = grec.get("Opportunity_Description");
+Deal_Name = grec.get("Deal_Name");
+Description_for_Solution_proposed = grec.get("Description_for_Solution_proposed");
+// customerName = grec.get("Account_Name");
+customerName = grec.get("Account_Name").get("name");
+info customerName;
+// info customerName;
+filterCustomerMap = Map();
+filterCustomerMap.put("contact_name",customerName);
+// filterCustomerMap.put("contact_name","Testing_Lead_By_dev");
+getCustomerDetails = zoho.books.getRecords("contacts",orgId,filterCustomerMap,"zohobooks");
+// info getCustomerDetails;
+customer_ID = "";
+// customerDetail = getCustomerDetails.get("contacts").get("contact_id");
+// info customerDetail;
+if(getCustomerDetails.get("contacts").isEmpty())
+{
+	customerMap = Map();
+	customerMap.put("contact_name",customerName);
+	createCustomer = zoho.books.createRecord("contacts",orgId,customerMap,"zohobooks");
+	// 	info createCustomer;
+	contactDetails = createCustomer.get("contact");
+	contactId = contactDetails.get("contact_id");
+	customer_ID = contactId;
+	// 	return;
+	// 	createCustomer = zoho.books.createRecord(<module>, <TEXT>, <KEY-VALUE>)
+}
+else
+{
+	contactId = getCustomerDetails.get("contacts").get(0).get("contact_id");
+	customer_ID = contactId;
+}
+info "customer_ID -> " + customer_ID;
+info grec;
+fileIdList = List();
+if(!grec.get("Client_Purchase_Order_Document").isNull())
+{
+	fileId = grec.get("Client_Purchase_Order_Document").get(0).get("file_Id");
+	fileIdList.add(fileId);
+}
+if(!grec.get("Performance_Bond_Documents").isNull())
+{
+	fileId = grec.get("Performance_Bond_Documents").get(0).get("file_Id");
+	fileIdList.add(fileId);
+}
+if(!grec.get("Client_Final_Contract_Document").isNull())
+{
+	fileId = grec.get("Client_Final_Contract_Document").get(0).get("file_Id");
+	fileIdList.add(fileId);
+}
+if(!grec.get("SV_Final_Offer_Document").isNull())
+{
+	fileId = grec.get("SV_Final_Offer_Document").get(0).get("file_Id");
+	fileIdList.add(fileId);
+}
+if(!grec.get("Award_Costing_Sheet_Document").isNull())
+{
+	fileId = grec.get("Award_Costing_Sheet_Document").get(0).get("file_Id");
+	fileIdList.add(fileId);
+}
+// //--------------------------------------------------------------------------------------------------------------------------
+// // *********************************  Below code is useful for Downloading the File ***************************************
+// //--------------------------------------------------------------------------------------------------------------------------
+attachmentList = List();
+for each  fileId in fileIdList
+{
+	downloadFile = invokeurl
+	[
+		url :"https://www.zohoapis.com/crm/v2/files?id=" + fileId
+		type :GET
+		connection:"crm_full"
+	];
+	info downloadFile;
+	info "File Download Response : " + isFile(downloadFile);
+	downloadFile.setParamName("attachment");
+	attachmentList.add(downloadFile);
+}
+// //--------------------------------------------------------------------------------------------------------------------------
+// // *****************************  Below code is useful for Creating the Sales Order  ********************************
+// //--------------------------------------------------------------------------------------------------------------------------
+new_map = Map();
+line_items = List();
+items = Map();
+Account_Manager_Name = "";
+Payment_Terms_defined = grec.get("Payment_Terms_defined");
+if(Payment_Terms_defined == "Yes")
+{
+	Specify_Payments_Terms = grec.get("Specify_Payments_Terms");
+	if(Specify_Payments_Terms == "Net 15")
+	{
+		new_map.put("payment_terms",15);
+	}
+	else if(Specify_Payments_Terms == "Net 30")
+	{
+		new_map.put("payment_terms",30);
+	}
+	else if(Specify_Payments_Terms == "Net 45")
+	{
+		new_map.put("payment_terms",45);
+	}
+	else if(Specify_Payments_Terms == "Net 60")
+	{
+		new_map.put("payment_terms",60);
+	}
+	else if(Specify_Payments_Terms == "Net 90")
+	{
+		new_map.put("payment_terms",90);
+	}
+	else
+	{
+		new_map.put("payment_terms",Specify_Payments_Terms);
+	}
+	// 	new_map.put("payment_terms_label" , Specify_Payments_Terms);
+}
+if(grec.get("Account_Manager") != null && !grec.get("Account_Manager").isEmpty())
+{
+	Account_Manager_Name = grec.get("Account_Manager").get("name");
+	info Account_Manager_Name;
+	for each  salesPerson in salesPersonList.get("data")
+	{
+		//         info "-> " + salesPerson;
+		salesperson_name = salesPerson.get("salesperson_name");
+		// 		firstHalf_salesPerson = salesperson_name.getPrefix(" ");
+		firstName_AccountManager = Account_Manager_Name.getPrefix(" ");
+		//         info "----------------------------------------------------------------------";
+		// 		info "Account_Manager_Name -> " + Account_Manager_Name;
+		// 		info "salesperson_name -> " + salesperson_name;
+		// 		info "firstName_AccountManager -> " + firstName_AccountManager;
+		// 		info "firstHalf_salesPerson -> " + firstHalf_salesPerson;
+		if(salesperson_name.toLowerCase() == firstName_AccountManager.toLowerCase())
+		{
+			//    info "Inside";
+			salesperson_id = salesPerson.get("salesperson_id");
+			new_map.put("salesperson_id",salesperson_id);
+		}
+	}
+}
+new_map.put("customer_id",customer_ID);
+new_map.put("notes",Opportunity_Description);
+if(Account_Manager_Name == "")
+{
+	new_map.put("",Account_Manager_Name);
+}
+if(Deal_Date == null)
+{
+	new_map.put("date",zoho.currentdate.toString("yyyy-MM-dd"));
+}
+else
+{
+	new_map.put("date",Deal_Date.toString("yyyy-MM-dd"));
+}
+// Sales Order Number
+// if(!Opportunity_ID.isNull() && !Opportunity_ID.isEmpty())
+// {
+// 	field_map=map();
+// 	field_map.put("customfield_id","5443013000001575019");
+// 	field_map.put("value",id);
+// 	new_map.put("custom_fields",field_map);
+// 	new_map.put("cf_crm_deal_id",Opportunity_ID1);
+// }
+// if(!Opportunity_ID.isNull() && !Opportunity_ID.isEmpty())
+// {
+// 	new_map.put("salesorder_number",);
+// }
+// Reference Number
+if(!Customer_PO_Number.isNull() && !Customer_PO_Number.isEmpty())
+{
+	new_map.put("reference_number",Customer_PO_Number);
+}
+// Shipment Date
+if(!Promised_Delivery_Date.isNull() && !Promised_Delivery_Date.isEmpty())
+{
+	new_map.put("shipment_date",Promised_Delivery_Date.toString("yyyy-MM-dd"));
+}
+// Salesperson Name
+// if (!salesperson_id.isNull() && !salesperson_id.isEmpty()) {
+//     new_map.put("salesperson_name", salesperson_id);
+// }
+// TCV
+// RA_per_Map = Map();
+// RA_per_Map.put('customfield_id','5443013000002244005');
+// RA_per_Map.put('value',Client_Purchase_Order);
+// new_map.put("date", "04-Feb-2025");
+items.put("description",Deal_Name);
+items.put("item_order",4);
+items.put("rate",1);
+items.put("quantity",1);
+itemList = List();
+itemList.add(items);
+customFieldList = List();
+customFieldMap1 = Map();
+// customFieldMap1.put('customfield_id','5443013000001575019');
+// customFieldMap1.put('value',Opportunity_ID1);
+customFieldList.add(customFieldMap1);
+Client_Purchase_Order = grec.get("Client_Purchase_Order");
+Client_Final_Contract = grec.get("Client_Final_Contract");
+SV_Final_Offer = grec.get("SV_Final_Offer");
+Award_Costing_Sheet = grec.get("Award_Costing_Sheet");
+Performance_Bond = grec.get("Performance_Bond");
+// Project Revenue Type Map
+if(!Project_Revenue_Type.isNull() && !Project_Revenue_Type.isEmpty())
+{
+	Project_Revenue_Type_Map = Map();
+	Project_Revenue_Type_Map.put('customfield_id','5443013000000570014');
+	Project_Revenue_Type_Map.put('value',Project_Revenue_Type);
+	customFieldList.add(Project_Revenue_Type_Map);
+}
+// Client Purchase Order Map
+if(!Client_Purchase_Order.isNull() && !Client_Purchase_Order.isEmpty())
+{
+	Client_Purchase_Order_Map = Map();
+	Client_Purchase_Order_Map.put('customfield_id','5443013000002244045');
+	Client_Purchase_Order_Map.put('value',Client_Purchase_Order);
+	customFieldList.add(Client_Purchase_Order_Map);
+}
+// Client Final Contract Map
+if(!Client_Final_Contract.isNull() && !Client_Final_Contract.isEmpty())
+{
+	Client_Final_Contract_Map = Map();
+	Client_Final_Contract_Map.put('customfield_id','5443013000002244053');
+	Client_Final_Contract_Map.put('value',Client_Final_Contract);
+	customFieldList.add(Client_Final_Contract_Map);
+}
+// SV Final Offer Map
+if(!SV_Final_Offer.isNull() && !SV_Final_Offer.isEmpty())
+{
+	SV_Final_Offer_Map = Map();
+	SV_Final_Offer_Map.put('customfield_id','5443013000002244061');
+	SV_Final_Offer_Map.put('value',SV_Final_Offer);
+	customFieldList.add(SV_Final_Offer_Map);
+}
+// Award Costing Sheet Map
+if(!Award_Costing_Sheet.isNull() && !Award_Costing_Sheet.isEmpty())
+{
+	Award_Costing_Sheet_Map = Map();
+	Award_Costing_Sheet_Map.put('customfield_id','5443013000002244069');
+	Award_Costing_Sheet_Map.put('value',Award_Costing_Sheet);
+	customFieldList.add(Award_Costing_Sheet_Map);
+}
+// Performance Bond Map
+if(!Performance_Bond.isNull() && !Performance_Bond.isEmpty())
+{
+	Performance_Bond_Map = Map();
+	Performance_Bond_Map.put('customfield_id','5443013000002244077');
+	Performance_Bond_Map.put('value',Performance_Bond);
+	customFieldList.add(Performance_Bond_Map);
+}
+//CRM Deal ID 
+field_map = Map();
+field_map.put("customfield_id","5443013000001575019");
+field_map.put("value",id);
+customFieldList.add(field_map);
+if(!TCV.isNull() && !TCV.isEmpty())
+{
+	totalSalesValueMap = Map();
+	totalSalesValueMap.put('customfield_id','5443013000002244001');
+	totalSalesValueMap.put('value',TCV);
+	customFieldList.add(totalSalesValueMap);
+}
+// Total Cost
+if(!Total_Cost.isNull() && !Total_Cost.isEmpty())
+{
+	totalCostMap = Map();
+	totalCostMap.put('customfield_id','5443013000002244013');
+	totalCostMap.put('value',Total_Cost);
+	customFieldList.add(totalCostMap);
+}
+// Total Cost
+if(!RA.isNull() && !RA.isEmpty())
+{
+	RA_Map = Map();
+	RA_Map.put('customfield_id','5443013000002244005');
+	RA_Map.put('value',RA);
+	customFieldList.add(RA_Map);
+}
+if(!PTI.isNull() && !PTI.isEmpty())
+{
+	PTI_per_Map = Map();
+	PTI_per_Map.put('customfield_id','5443013000002244009');
+	PTI_per_Map.put('value',PTI);
+	customFieldList.add(PTI_per_Map);
+}
+new_map.put("line_items",itemList);
+new_map.put('custom_fields',customFieldList);
+new_map.put("salesorder_number",Opportunity_ID1);
+salesOrderCreation = invokeurl
+[
+	url :"https://www.zohoapis.com/books/v3/salesorders?organization_id=" + orgId
+	type :POST
+	parameters:new_map.toString()
+	connection:"zohobooks"
+];
+info "Sales Order Response: " + salesOrderCreation;
+// 	// Step 3: Get Sales Order ID from Response
+info new_map;
+salesorderID = salesOrderCreation.get("salesorder").get("salesorder_id");
+//--------------------------------------------------------------------------------------------------------------------------
+// *********************  Below code is useful for Updating the Sales Order with Attachment  ******************************
+//--------------------------------------------------------------------------------------------------------------------------
+for each  file in attachmentList
+{
+	file.setparamname("attachment");
+	upload_response = invokeurl
+	[
+		url :"https://www.zohoapis.com/books/v3/salesorders/" + salesorderID + "/attachment?organization_id=" + orgId
+		type :POST
+		files:file
+		connection:"zohobooks"
+	];
+	info "Attachment Upload Response: " + upload_response;
+}
+// ---------------------------------------------
+// ---------------------------------------------
+// ---------------------------------------------
+// ---------------------------------------------
+// ---------------------------------------------
+// ---------------------------------------------
+// ---------------------------------------------
+// ---------------------------------------------
+// ---------------------------------------------
+// ---------------------------------------------
+// ---------------------------------------------
+// ---------------------------------------------
+// ---------------------------------------------
+// ---------------------------------------------
+// ---------------------------------------------
+// ---------------------------------------------
+// ---------------------------------------------
+// ---------------------------------------------
+// ---------------------------------------------
+// ---------------------------------------------
+// ---------------------------------------------
+// ---------------------------------------------
+// ---------------------------------------------
+// ---------------------------------------------
+// ---------------------------------------------
+// ---------------------------------------------
+// ---------------------------------------------
+// ---------------------------------------------
+// ---------------------------------------------
+// ---------------------------------------------
+// ---------------------------------------------
+// ---------------------------------------------
+// ---------------------------------------------
+// //--------------------------------------------------------------------------------------------------------------------------
+// // *********************  Code ENds   ******************************
+// //--------------------------------------------------------------------------------------------------------------------------
+// getRec = zoho.books.getRecordsByID("salesorders", "859704582", 5443013000002446009, "zohobooks");
+// info getRec;
+// so_name = grec.getJSON("Name");
+// /////////////////Get Attachments from CRM SalesOrder in Finance Module/////////////////
+// response = invokeurl
+// [
+// 	url :"https://www.zohoapis.com/crm/v7/Deals/" + id + "/Attachments?fields=id,Owner,File_Name,Created_Time,Parent_Id"
+// 	type :GET
+// 	connection:"crm_full"
+// ];
+// info response;
+// ---------------------------------------------------------------------------------------------------------------------
+// ---------------------------------------------------------------------------------------------------------------------
+// grec = zoho.crm.getRecordById("Deals",id);
+// info res;
+// Deal_Date = grec.get("Deal_Date");
+// Deal_Name = grec.get("Deal_Name");
+// Description_for_Solution_proposed = grec.get("Description_for_Solution_proposed");
+// customerName = grec.get("Account_Name").get("name");
+// // info customerName;
+// filterMap = Map();
+// customer_ID = "";
+// filterMap.put("contact_name",customerName);
+// // filterMap.put("contact_name" , "customerName");
+// getCustomer = zoho.books.getRecords("contacts","859704582",filterMap,"zohobooks");
+// // info "getCustomer -> " +  getCustomer;
+// if(getCustomer.get("contacts").isEmpty())
+// {
+// 	createMap = Map();
+// 	createMap.put("contact_name",customerName);
+// 	createCustomer = zoho.books.createRecord("contacts","859704582",createMap,"zohobooks");
+// 	createdContact_Id = createCustomer.get("contacts").get("contact_id");
+// 	// 	info createCustomer;
+// 	customer_ID = createdContact_Id;
+// 	info createdContact_Id;
+// }
+// else
+// {
+// 	customer_ID = getCustomer.get("contacts").get(0).get("contact_id");
+// }
+// // getItem = zoho.books.getRecords("items", <TEXT>)
+// new_map = Map();
+// line_items = List();
+// items = Map();
+// info customer_ID;
+// new_map.put("customer_id",customer_ID);
+// if(Deal_Date == null)
+// {
+// 	new_map.put("date",zoho.currentdate.toString("yyyy-MM-dd"));
+// }
+// else
+// {
+// 	new_map.put("date",Deal_Date.toString("yyyy-MM-dd"));
+// }
+// // new_map.put("date", "04-Feb-2025");
+// items.put("description",Deal_Name);
+// items.put("item_order",4);
+// items.put("rate",1.23);
+// items.put("quantity",4);
+// itemList = List();
+// itemList.add(items);
+// customFieldList = List();
+// customFieldMap1 = Map();
+// customFieldMap1.put('customfield_id','5443013000001575019');
+// customFieldMap1.put('value',id);
+// customFieldList.add(customFieldMap1);
+// new_map.put("line_items",itemList);
+// new_map.put('custom_fields',customFieldList);
+// // response = zoho.books.createRecord("salesorders","859704582",new_map,"zohobooks");
+// // info response;
+// // 	resp = invokeurl
+// // 	[
+// // 		url :"https://sanjay.loannow.in/sleep"
+// // 		type :GET
+// // 	];
+// // salesorderID = response.get("salesorder").get("salesorder_id");
+// // ---------------------------------------------------------------------------------------------------------------------
+// // ---------------------------------------------------------------------------------------------------------------------
+// // 	resp = invokeurl
+// // 	[
+// // 		url :"https://sanjay.loannow.in/sleep"
+// // 		type :GET
+// // 	];
+// /////////////////Search the SalesOrder in Zoho Books/////////////////
+// // search = invokeurl
+// // [
+// // url :"https://books.zoho.in/api/v3/salesorders?search_text=" + so_name + "&page=1&per_page=10&organization_id=" + orgId
+// // type :GET
+// // connection:"booksconnect"
+// // ];
+// // info search;
+// // if ( ifnull(ifnull(search,"").getJSON("salesorders"),List()).size() != 0 )
+// // {
+// // salesorderId = search.getJSON("salesorders").get(0).getJSON("salesorder_id");
+// // info "Books salesorderId : "+salesorderId;
+// // }
+// // ----------------------------------------------------------------------------------------------------------------------------
+// info "res -> " + response;
+// if(response.isNull() == true)
+// {
+// 	response = invokeurl
+// 	[
+// 		url :"https://www.zohoapis.com/books/v3/salesorders?organization_id=" + orgId
+// 		type :POST
+// 		parameters:new_map.toString()
+// 		connection:"zohobooks"
+// 	];
+// 	info "Sales Order Response: " + response;
+// }
+// else if(ifnull(response,List()).getJSON("data").size() != 0)
+// {
+// 	files = response.getJSON("data");
+// 	attachmentsList = List();
+// 	for each  f in files
+// 	{
+// 		fid = f.getJSON("id");
+// 		info "File ID: " + fid;
+// Step 1: Download the file from Zoho CRM
+// 			url :"https://www.zohoapis.com/crm/v5/Deals/" + id + "/Attachments/" + fid
+// 		download = invokeurl
+// 		[
+// 			url :"https://www.zohoapis.com/crm/v5/Deals/" + id + "/Attachments/" + "9mw8x15fe11de1ef44e58a30e8a302e39fdfe"
+// 			type :GET
+// 			connection:"crm_full"
+// 		];
+// 		info "Download file -> " + download;
+// 		info "File Download Response: " + isfile(download);
+// ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// Working....................................
+// ----------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// response = invokeurl
+// [
+// 	url :"https://www.zohoapis.com/crm/v2/files?id=9mw8x15fe11de1ef44e58a30e8a302e39fdfe"
+// 	type :GET
+// 	connection:"crm_full"
+// ];
+// info response;
+// info "File Download Response : " + isFile(response);
+// response.setParamName("document");
+// // Custom Field - Test Attachment - 5443013000002394001
+// cfID = "5443013000002394001";
+// uploadUrl = "https://books.zoho.com/api/v3/customfields/" + cfID + "/adddocument?organization_id=" + orgId;
+// result = invokeurl
+// [
+// 	url :uploadUrl
+// 	type :POST
+// 	files:response
+// 	connection:"zohobooks"
+// ];
+// info "Attachment Upload Result: " + result;
+// attachmentMap = Map();
+// if(result.get("code") == 0)
+// {
+// 	docID = result.get("documents").get("document_id");
+// 	attachmentMap.put("cf_test_attachment",docID);
+// 	info "Document ID: " + docID;
+// }
+// cList = List();
+// docID = attachmentMap.get("cf_test_attachment");
+// if(!docID.isNull())
+// {
+// 	cMap = Map();
+// 	cMap.put("api_name","cf_test_attachment");
+// 	cMap.put("value",docID);
+// 	cList.add(cMap);
+// }
+// salesOrderMap = Map();
+// if(cList.size() > 0)
+// {
+// 	salesOrderMap.put("custom_fields",cList);
+// 	params = Map();
+// 	params.put("JSONString",salesOrderMap);
+// 	updateSalesOrder = invokeurl
+// 	[
+// 		url :"https://books.zoho.com/api/v3/items/5443013000002394007?organization_id=" + orgId
+// 		type :PUT
+// 		parameters:params
+// 		connection:"zohobooks"
+// 	];
+// 	info "Updated Sales Order Response: " + updateSalesOrder;
+// }
+// ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+// 		attachmentsList.add(download);
+// 	}
+// 	// Check if file is valid
+// 	// Step 2: Create Sales Order (Without Attachment)
+// 	// 		info "Sales Order Data: " + new_map;
+// 	response = invokeurl
+// 	[
+// 		url :"https://www.zohoapis.com/books/v3/salesorders?organization_id=" + orgId
+// 		type :POST
+// 		parameters:new_map.toString()
+// 		connection:"zohobooks"
+// 	];
+// 	info "Sales Order Response: " + response;
+// 	// Step 3: Get Sales Order ID from Response
+// 	salesorderID = response.get("salesorder").get("salesorder_id");
+// 	if(salesorderID != null)
+// 	{
+// 		info "Sales Order Created: " + salesorderID;
+// 		// Step 4: Attach the file to the newly created Sales Order
+// 		// 			download.setparamname("attachment");
+// 		// 			// Ensure proper file parameter
+// 		// 			upload_response = invokeurl
+// 		// 			[
+// 		// 				url :"https://www.zohoapis.com/books/v3/salesorders/" + salesorderID + "/attachment?organization_id=" + orgId
+// 		// 				type :POST
+// 		// 				files:download
+// 		// 				connection:"zohobooks"
+// 		// 			];
+// 		// 			info "Attachment Upload Response: " + upload_response;
+// 		for each  file in attachmentsList
+// 		{
+// 			file.setparamname("attachment");
+// 			upload_response = invokeurl
+// 			[
+// 				url :"https://www.zohoapis.com/books/v3/salesorders/" + salesorderID + "/attachment?organization_id=" + orgId
+// 				type :POST
+// 				files:file
+// 				connection:"zohobooks"
+// 			];
+// 			info "Attachment Upload Response: " + upload_response;
+// 		}
+// 	}
+// 	else
+// 	{
+// 		info "Error: Sales Order ID not returned in response.";
+// 	}
+// }

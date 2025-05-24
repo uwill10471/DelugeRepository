@@ -1,0 +1,36 @@
+res = zoho.crm.getRecordById("Leads",id);
+countryName = res.get("Country_Name");
+data = zoho.crm.searchRecords("Country","(Name:equals:" + countryName + ")");
+Country_Code = data.getJSON("Country_Code");
+Value2 = res.get("Value2");
+date = zoho.currentdate;
+month = date.getMonth();
+dateYear = date.getYear();
+dateye = dateYear.subString(2,4);
+oppID = res.get("Deal_ID");
+info oppID;
+if(month <= 10)
+{
+	addMonthAndyear = "0" + month + dateye;
+}
+else
+{
+	addMonthAndyear = month + dateye;
+}
+info addMonthAndyear;
+info Country_Code;
+info Value2;
+leadId = (Country_Code + Value2) + addMonthAndyear;
+info leadId;
+updateMAP = Map();
+updateMAP.put("Lead_ID",leadId);
+respon = zoho.crm.updateRecord("Leads",id,updateMAP);
+info respon;
+if(oppID != null || oppID != "")
+{
+	data = zoho.crm.searchRecords("Deals","(Opportunity_ID:equals:" + oppID + ")");
+	oppid = data.getJSON("id");
+	dataMap = Map();
+	dataMap.put("Lead_ID",leadId);
+	response = zoho.crm.updateRecord("Deals",oppid,dataMap);
+}
