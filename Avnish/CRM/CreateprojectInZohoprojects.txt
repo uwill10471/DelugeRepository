@@ -1,0 +1,37 @@
+// Fetch deal record from Zoho CRM
+data = zoho.crm.getRecordById("Deals",id);
+// Extract necessary fields from the deal record
+Deal_Name = data.get("Deal_Name");
+info Deal_Name;
+Opportunity_ID = data.get("Opportunity_ID");
+info Opportunity_ID;
+Customer_PO_Number = data.get("Customer_PO_Number");
+info Customer_PO_Number;
+Customer_PO_Value = data.get("Customer_PO_Value");
+info Customer_PO_Value;
+Contact_Person = data.get("Contact_Person");
+Contact_Person_Name = Contact_Person.get("name");
+info Contact_Person_Name;
+Contact_Email = data.get("Contact_Email");
+info Contact_Email;
+// Prepare data for Zoho Projects API
+mp = Map();
+mp.put("UDF_BOOLEAN1",false);
+// +++++++++ create MIR +++++++++
+mp.put("UDF_CHAR1",Opportunity_ID);
+mp.put("UDF_CHAR2",Customer_PO_Number);
+mp.put("UDF_DECIMAL1",Customer_PO_Value);
+mp.put("UDF_CHAR3",Contact_Person_Name);
+mp.put("UDF_CHAR4",Contact_Email);
+mp.put("name",Deal_Name);
+mp.put("template_id","2359384000000334023");
+// Create the project in Zoho Projects via API
+create_project = invokeurl
+[
+	url :"https://projectsapi.zoho.com/restapi/portal/smartvisionforinformationsys/projects/"
+	type :POST
+	parameters:mp
+	connection:"zohoprojects"
+];
+// Output the result of the API call
+info create_project;

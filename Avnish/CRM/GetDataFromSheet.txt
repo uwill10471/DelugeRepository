@@ -1,0 +1,860 @@
+// res = zoho.sheet.getSheets(id);
+// info res;
+response1 = SheetID.subString(34,71);
+// info response;
+queryData = Map();
+// info SheetName;
+// info response;
+response = zoho.sheet.getRecords(response1,SheetName,queryData,"lombardsheet");
+// info response;
+records = response.get("records");
+//info records;
+//info response;
+//info records;
+// for each  ele in records
+// {
+// 	ind = ele.get("row_index");
+// }
+// ind = ind - 2;
+//  info ind;
+//   info records.size();
+// anticipated_Annual_Turnover1 = records.getJSON("Anticipated Annual Premium1");
+// anticipated_Annual_Turnover2 = records.getJSON("Anticipated Annual Premium2");
+// anticipated_Annual_Turnover3 = records.getJSON("Anticipated Annual Premium3");
+// anticipated_Annual_Turnover4 = records.getJSON("Anticipated Annual Premium4");
+// Premium_Rate_TO1 = records.getJSON("Premium Rate TO1");
+// Premium_Rate_TO1 = Premium_Rate_TO1.toDecimal() * 100;
+// Premium_Rate_TO2 = records.getJSON("Premium Rate TO2");
+// Premium_Rate_TO2 = Premium_Rate_TO2.toDecimal() * 100;
+// //Premium_Rate_TO2 = Premium_Rate_TO2 * 100;
+// Premium_Rate_TO3 = records.getJSON("Premium Rate TO3");
+// Premium_Rate_TO3 = Premium_Rate_TO3.toDecimal() * 100;
+// Premium_Rate_TO4 = records.getJSON("Premium Rate TO4");
+// Premium_Rate_TO4 = Premium_Rate_TO4.toDecimal() * 100;
+// Premium_Rate_TO5 = records.getJSON("Premium Rate TO5");
+// Premium_Rate_TO5 = Premium_Rate_TO5.toDecimal() * 100;
+// Premium_Rate_TO6 = records.getJSON("Premium Rate TO6");
+// Premium_Rate_TO6 = Premium_Rate_TO6.toDecimal() * 100;
+// Premium_Rate_TO7 = records.getJSON("Premium Rate TO7");
+// Premium_Rate_TO7 = Premium_Rate_TO7.toDecimal() * 100;
+// Premium_Rate_TO8 = records.getJSON("Premium Rate TO8");
+// Premium_Rate_TO8 = Premium_Rate_TO8.toDecimal() * 100;
+// Premium_Rate_TO1
+Premium_Rate_TO1 = records.getJSON("Premium Rate TO1");
+if(Premium_Rate_TO1 != null && Premium_Rate_TO1 != "")
+{
+	Premium_Rate_TO1 = Premium_Rate_TO1.toDecimal() * 100;
+}
+else
+{
+	Premium_Rate_TO1 = null;
+}
+// Premium_Rate_TO2
+Premium_Rate_TO2 = records.getJSON("Premium Rate TO2");
+if(Premium_Rate_TO2 != null && Premium_Rate_TO2 != "")
+{
+	Premium_Rate_TO2 = Premium_Rate_TO2.toDecimal() * 100;
+}
+else
+{
+	Premium_Rate_TO2 = null;
+}
+// Premium_Rate_TO3
+Premium_Rate_TO3 = records.getJSON("Premium Rate TO3");
+if(Premium_Rate_TO3 != null && Premium_Rate_TO3 != "")
+{
+	Premium_Rate_TO3 = Premium_Rate_TO3.toDecimal() * 100;
+}
+else
+{
+	Premium_Rate_TO3 = null;
+}
+// Premium_Rate_TO4
+Premium_Rate_TO4 = records.getJSON("Premium Rate TO4");
+if(Premium_Rate_TO4 != null && Premium_Rate_TO4 != "")
+{
+	Premium_Rate_TO4 = Premium_Rate_TO4.toDecimal() * 100;
+}
+else
+{
+	Premium_Rate_TO4 = null;
+}
+// Premium_Rate_TO5
+Premium_Rate_TO5 = records.getJSON("Premium Rate TO5");
+if(Premium_Rate_TO5 != null && Premium_Rate_TO5 != "")
+{
+	Premium_Rate_TO5 = Premium_Rate_TO5.toDecimal() * 100;
+}
+else
+{
+	Premium_Rate_TO5 = null;
+}
+// Premium_Rate_TO6
+Premium_Rate_TO6 = records.getJSON("Premium Rate TO6");
+if(Premium_Rate_TO6 != null && Premium_Rate_TO6 != "")
+{
+	Premium_Rate_TO6 = Premium_Rate_TO6.toDecimal() * 100;
+}
+else
+{
+	Premium_Rate_TO6 = null;
+}
+// Premium_Rate_TO7
+Premium_Rate_TO7 = records.getJSON("Premium Rate TO7");
+if(Premium_Rate_TO7 != null && Premium_Rate_TO7 != "")
+{
+	Premium_Rate_TO7 = Premium_Rate_TO7.toDecimal() * 100;
+}
+else
+{
+	Premium_Rate_TO7 = null;
+}
+// Premium_Rate_TO8
+Premium_Rate_TO8 = records.getJSON("Premium Rate TO8");
+if(Premium_Rate_TO8 != null && Premium_Rate_TO8 != "")
+{
+	Premium_Rate_TO8 = Premium_Rate_TO8.toDecimal() * 100;
+}
+else
+{
+	Premium_Rate_TO8 = null;
+}
+Admin_Annual_Fee1 = records.getJSON("Admin_Annual_Fee1");
+Admin_Annual_Fee1 = records.getJSON("Admin Annual Fee1");
+Admin_Annual_Fee2 = records.getJSON("Admin Annual Fee2");
+Admin_Annual_Fee3 = records.getJSON("Admin Annual Fee3");
+Admin_Annual_Fee4 = records.getJSON("Admin Annual Fee4");
+Admin_Annual_Fee5 = records.getJSON("Admin Annual Fee5");
+Admin_Annual_Fee6 = records.getJSON("Admin Annual Fee6");
+Admin_Annual_Fee7 = records.getJSON("Admin Annual Fee7");
+Admin_Annual_Fee8 = records.getJSON("Admin Annual Fee8");
+Non_Qualifying_Loss1 = records.getJSON("Non Qualifying Loss1");
+Non_Qualifying_Loss2 = records.getJSON("Non Qualifying Loss2");
+Non_Qualifying_Loss3 = records.getJSON("Non Qualifying Loss3");
+Non_Qualifying_Loss4 = records.getJSON("Non Qualifying Loss4");
+Non_Qualifying_Loss5 = records.getJSON("Non Qualifying Loss5");
+Non_Qualifying_Loss6 = records.getJSON("Non Qualifying Loss6");
+Non_Qualifying_Loss7 = records.getJSON("Non Qualifying Loss7");
+Non_Qualifying_Loss8 = records.getJSON("Non Qualifying Loss8");
+Limit_of_Discretion1 = records.getJSON("Limit of Discretion1");
+Limit_of_Discretion2 = records.getJSON("Limit of Discretion2");
+Limit_of_Discretion3 = records.getJSON("Limit of Discretion3");
+Limit_of_Discretion4 = records.getJSON("Limit of Discretion4");
+Limit_of_Discretion5 = records.getJSON("Limit of Discretion5");
+Limit_of_Discretion6 = records.getJSON("Limit of Discretion6");
+Limit_of_Discretion7 = records.getJSON("Limit of Discretion7");
+Limit_of_Discretion8 = records.getJSON("Limit of Discretion8");
+Aggregate_First_Loss1 = records.getJSON("Aggregate First Loss1");
+Aggregate_First_Loss2 = records.getJSON("Aggregate First Loss2");
+Aggregate_First_Loss3 = records.getJSON("Aggregate First Loss3");
+Aggregate_First_Loss4 = records.getJSON("Aggregate First Loss4");
+Aggregate_First_Loss5 = records.getJSON("Aggregate First Loss5");
+Aggregate_First_Loss6 = records.getJSON("Aggregate First Loss6");
+Aggregate_First_Loss7 = records.getJSON("Aggregate First Loss7");
+Aggregate_First_Loss8 = records.getJSON("Aggregate First Loss8");
+Maximum_Liability1 = records.getJSON("Maximum Liability1");
+Maximum_Liability2 = records.getJSON("Maximum Liability2");
+Maximum_Liability3 = records.getJSON("Maximum Liability3");
+Maximum_Liability4 = records.getJSON("Maximum Liability4");
+Maximum_Liability5 = records.getJSON("Maximum Liability5");
+Maximum_Liability6 = records.getJSON("Maximum Liability6");
+Maximum_Liability7 = records.getJSON("Maximum Liability7");
+Maximum_Liability8 = records.getJSON("Maximum Liability8");
+// Insured_Percentage1 = records.getJSON("Insured Percentage1");
+// Insured_Percentage1 = Insured_Percentage1 * 100;
+// Insured_Percentage2 = records.getJSON("Insured Percentage2");
+// Insured_Percentage2 = Insured_Percentage2 * 100;
+// Insured_Percentage3 = records.getJSON("Insured Percentage3");
+// Insured_Percentage3 = Insured_Percentage3 * 100;
+// Insured_Percentage4 = records.getJSON("Insured Percentage4");
+// Insured_Percentage4 = Insured_Percentage4 * 100;
+// Insured_Percentage5 = records.getJSON("Insured Percentage5");
+// Insured_Percentage5 = Insured_Percentage5 * 100;
+// Insured_Percentage6 = records.getJSON("Insured Percentage6");
+// Insured_Percentage6 = Insured_Percentage6 * 100;
+// Insured_Percentage7 = records.getJSON("Insured Percentage7");
+// Insured_Percentage7 = Insured_Percentage7 * 100;
+// Insured_Percentage8 = records.getJSON("Insured Percentage8");
+// Insured_Percentage8 = Insured_Percentage8 * 100;
+Insured_Percentage1 = records.getJSON("Insured Percentage1");
+if(Insured_Percentage1 != null && Insured_Percentage1 != "")
+{
+	Insured_Percentage1 = Insured_Percentage1.toDecimal() * 100;
+}
+else
+{
+	Insured_Percentage1 = null;
+}
+Insured_Percentage2 = records.getJSON("Insured Percentage2");
+if(Insured_Percentage2 != null && Insured_Percentage2 != "")
+{
+	Insured_Percentage2 = Insured_Percentage2.toDecimal() * 100;
+}
+else
+{
+	Insured_Percentage2 = null;
+}
+Insured_Percentage3 = records.getJSON("Insured Percentage3");
+if(Insured_Percentage3 != null && Insured_Percentage3 != "")
+{
+	Insured_Percentage3 = Insured_Percentage3.toDecimal() * 100;
+}
+else
+{
+	Insured_Percentage3 = null;
+}
+Insured_Percentage4 = records.getJSON("Insured Percentage4");
+if(Insured_Percentage4 != null && Insured_Percentage4 != "")
+{
+	Insured_Percentage4 = Insured_Percentage4.toDecimal() * 100;
+}
+else
+{
+	Insured_Percentage4 = null;
+}
+Insured_Percentage5 = records.getJSON("Insured Percentage5");
+if(Insured_Percentage5 != null && Insured_Percentage5 != "")
+{
+	Insured_Percentage5 = Insured_Percentage5.toDecimal() * 100;
+}
+else
+{
+	Insured_Percentage5 = null;
+}
+Insured_Percentage6 = records.getJSON("Insured Percentage6");
+if(Insured_Percentage6 != null && Insured_Percentage6 != "")
+{
+	Insured_Percentage6 = Insured_Percentage6.toDecimal() * 100;
+}
+else
+{
+	Insured_Percentage6 = null;
+}
+Insured_Percentage7 = records.getJSON("Insured Percentage7");
+if(Insured_Percentage7 != null && Insured_Percentage7 != "")
+{
+	Insured_Percentage7 = Insured_Percentage7.toDecimal() * 100;
+}
+else
+{
+	Insured_Percentage7 = null;
+}
+Insured_Percentage8 = records.getJSON("Insured Percentage8");
+if(Insured_Percentage8 != null && Insured_Percentage8 != "")
+{
+	Insured_Percentage8 = Insured_Percentage8.toDecimal() * 100;
+}
+else
+{
+	Insured_Percentage8 = null;
+}
+// Policy_Performance_Bonus1 = records.getJSON("Policy Performance Bonus1");
+// Policy_Performance_Bonus1 = Policy_Performance_Bonus1 * 100;
+// Policy_Performance_Bonus2 = records.getJSON("Policy Performance Bonus2");
+// Policy_Performance_Bonus2 = Policy_Performance_Bonus2 * 100;
+// Policy_Performance_Bonus3 = records.getJSON("Policy Performance Bonus3");
+// Policy_Performance_Bonus3 = Policy_Performance_Bonus3 * 100;
+// Policy_Performance_Bonus4 = records.getJSON("Policy Performance Bonus4");
+// Policy_Performance_Bonus4 = Policy_Performance_Bonus4 * 100;
+// Policy_Performance_Bonus5 = records.getJSON("Policy Performance Bonus5");
+// Policy_Performance_Bonus5 = Policy_Performance_Bonus5 * 100;
+// Policy_Performance_Bonus6 = records.getJSON("Policy Performance Bonus6");
+// Policy_Performance_Bonus6 = Policy_Performance_Bonus6 * 100;
+// Policy_Performance_Bonus7 = records.getJSON("Policy Performance Bonus7");
+// Policy_Performance_Bonus7 = Policy_Performance_Bonus7 * 100;
+// Policy_Performance_Bonus8 = records.getJSON("Policy Performance Bonus8");
+// Policy_Performance_Bonus8 = Policy_Performance_Bonus8 * 100;
+Policy_Performance_Bonus1 = records.getJSON("Policy Performance Bonus1");
+if(Policy_Performance_Bonus1 != null && Policy_Performance_Bonus1 != "")
+{
+	Policy_Performance_Bonus1 = Policy_Performance_Bonus1.toDecimal() * 100;
+}
+else
+{
+	Policy_Performance_Bonus1 = null;
+}
+Policy_Performance_Bonus2 = records.getJSON("Policy Performance Bonus2");
+if(Policy_Performance_Bonus2 != null && Policy_Performance_Bonus2 != "")
+{
+	Policy_Performance_Bonus2 = Policy_Performance_Bonus2.toDecimal() * 100;
+}
+else
+{
+	Policy_Performance_Bonus2 = null;
+}
+Policy_Performance_Bonus3 = records.getJSON("Policy Performance Bonus3");
+if(Policy_Performance_Bonus3 != null && Policy_Performance_Bonus3 != "")
+{
+	Policy_Performance_Bonus3 = Policy_Performance_Bonus3.toDecimal() * 100;
+}
+else
+{
+	Policy_Performance_Bonus3 = null;
+}
+Policy_Performance_Bonus4 = records.getJSON("Policy Performance Bonus4");
+if(Policy_Performance_Bonus4 != null && Policy_Performance_Bonus4 != "")
+{
+	Policy_Performance_Bonus4 = Policy_Performance_Bonus4.toDecimal() * 100;
+}
+else
+{
+	Policy_Performance_Bonus4 = null;
+}
+Policy_Performance_Bonus5 = records.getJSON("Policy Performance Bonus5");
+if(Policy_Performance_Bonus5 != null && Policy_Performance_Bonus5 != "")
+{
+	Policy_Performance_Bonus5 = Policy_Performance_Bonus5.toDecimal() * 100;
+}
+else
+{
+	Policy_Performance_Bonus5 = null;
+}
+Policy_Performance_Bonus6 = records.getJSON("Policy Performance Bonus6");
+if(Policy_Performance_Bonus6 != null && Policy_Performance_Bonus6 != "")
+{
+	Policy_Performance_Bonus6 = Policy_Performance_Bonus6.toDecimal() * 100;
+}
+else
+{
+	Policy_Performance_Bonus6 = null;
+}
+Policy_Performance_Bonus7 = records.getJSON("Policy Performance Bonus7");
+if(Policy_Performance_Bonus7 != null && Policy_Performance_Bonus7 != "")
+{
+	Policy_Performance_Bonus7 = Policy_Performance_Bonus7.toDecimal() * 100;
+}
+else
+{
+	Policy_Performance_Bonus7 = null;
+}
+Policy_Performance_Bonus8 = records.getJSON("Policy Performance Bonus8");
+if(Policy_Performance_Bonus8 != null && Policy_Performance_Bonus8 != "")
+{
+	Policy_Performance_Bonus8 = Policy_Performance_Bonus8.toDecimal() * 100;
+}
+else
+{
+	Policy_Performance_Bonus8 = null;
+}
+Option1 = records.getJSON("Option1");
+Option1 = ifnull(Option1.toString(),"");
+Option2 = records.getJSON("Option2");
+Option2 = ifnull(Option2.toString(),"");
+Option3 = records.getJSON("Option3");
+Option3 = ifnull(Option3.toString(),"");
+Option4 = records.getJSON("Option4");
+Option4 = ifnull(Option4.toString(),"");
+Option5 = records.getJSON("Option5");
+Option5 = ifnull(Option5.toString(),"");
+Option6 = records.getJSON("Option6");
+Option6 = ifnull(Option6.toString(),"");
+Option7 = records.getJSON("Option7");
+Option7 = ifnull(Option7.toString(),"");
+Option8 = records.getJSON("Option8");
+Option8 = ifnull(Option8.toString(),"");
+// new get record 
+Anticipated_Annual_Turnover1 = records.getJSON("Anticipated Annual Turnover1");
+Anticipated_Annual_Turnover2 = records.getJSON("Anticipated Annual Turnover2");
+Anticipated_Annual_Turnover3 = records.getJSON("Anticipated Annual Turnover3");
+Anticipated_Annual_Turnover4 = records.getJSON("Anticipated Annual Turnover4");
+Anticipated_Annual_Turnover5 = records.getJSON("Anticipated Annual Turnover5");
+Anticipated_Annual_Turnover6 = records.getJSON("Anticipated Annual Turnover6");
+Anticipated_Annual_Turnover7 = records.getJSON("Anticipated Annual Turnover7");
+Anticipated_Annual_Turnover8 = records.getJSON("Anticipated Annual Turnover8");
+Anticipated_Annual_Premium1 = records.getJSON("Anticipated Annual Premium1").toString();
+Anticipated_Annual_Premium2 = records.getJSON("Anticipated Annual Premium2").toString();
+Anticipated_Annual_Premium3 = records.getJSON("Anticipated Annual Premium3").toString();
+Anticipated_Annual_Premium4 = records.getJSON("Anticipated Annual Premium4").toString();
+Anticipated_Annual_Premium5 = records.getJSON("Anticipated Annual Premium5").toString();
+Anticipated_Annual_Premium6 = records.getJSON("Anticipated Annual Premium6").toString();
+Anticipated_Annual_Premium7 = records.getJSON("Anticipated Annual Premium7").toString();
+Anticipated_Annual_Premium8 = records.getJSON("Anticipated Annual Premium8").toString();
+// Fixed_Monthly_Premium1 = records.getJSON("Fixed Monthly Premium1").toString();
+// Fixed_Monthly_Premium2 = records.getJSON("Fixed Monthly Premium2").toString();
+// Fixed_Monthly_Premium3 = records.getJSON("Fixed Monthly Premium3").toString();
+// Fixed_Monthly_Premium4 = records.getJSON("Fixed Monthly Premium4").toString();
+// Fixed_Monthly_Premium5 = records.getJSON("Fixed Monthly Premium5").toString();
+// Fixed_Monthly_Premium6 = records.getJSON("Fixed Monthly Premium6").toString();
+// Fixed_Monthly_Premium7 = records.getJSON("Fixed Monthly Premium7").toString();
+// Fixed_Monthly_Premium8 = records.getJSON("Fixed Monthly Premium8").toString();
+// Fixed_Monthly_Premium1
+// Fixed_Monthly_Premium1 = records.getJSON("Fixed Monthly Premium1");
+// Fixed_Monthly_Premium1
+Fixed_Monthly_Premium1 = records.getJSON("Fixed Monthly Premium1");
+if(Fixed_Monthly_Premium1 != null && Fixed_Monthly_Premium1 != "")
+{
+	decVal = Fixed_Monthly_Premium1.toDecimal();
+	decVal = decVal.round(2);
+	Fixed_Monthly_Premium1 = decVal.toString();
+}
+else
+{
+	Fixed_Monthly_Premium1 = null;
+}
+// Fixed_Monthly_Premium2
+Fixed_Monthly_Premium2 = records.getJSON("Fixed Monthly Premium2");
+if(Fixed_Monthly_Premium2 != null && Fixed_Monthly_Premium2 != "")
+{
+	decVal = Fixed_Monthly_Premium2.toDecimal();
+	decVal = decVal.round(2);
+	Fixed_Monthly_Premium2 = decVal.toString();
+}
+else
+{
+	Fixed_Monthly_Premium2 = null;
+}
+// Fixed_Monthly_Premium3
+Fixed_Monthly_Premium3 = records.getJSON("Fixed Monthly Premium3");
+if(Fixed_Monthly_Premium3 != null && Fixed_Monthly_Premium3 != "")
+{
+	decVal = Fixed_Monthly_Premium3.toDecimal();
+	decVal = decVal.round(2);
+	Fixed_Monthly_Premium3 = decVal.toString();
+}
+else
+{
+	Fixed_Monthly_Premium3 = null;
+}
+// Fixed_Monthly_Premium4
+Fixed_Monthly_Premium4 = records.getJSON("Fixed Monthly Premium4");
+if(Fixed_Monthly_Premium4 != null && Fixed_Monthly_Premium4 != "")
+{
+	decVal = Fixed_Monthly_Premium4.toDecimal();
+	decVal = decVal.round(2);
+	Fixed_Monthly_Premium4 = decVal.toString();
+}
+else
+{
+	Fixed_Monthly_Premium4 = null;
+}
+// Fixed_Monthly_Premium5
+Fixed_Monthly_Premium5 = records.getJSON("Fixed Monthly Premium5");
+if(Fixed_Monthly_Premium5 != null && Fixed_Monthly_Premium5 != "")
+{
+	decVal = Fixed_Monthly_Premium5.toDecimal();
+	decVal = decVal.round(2);
+	Fixed_Monthly_Premium5 = decVal.toString();
+}
+else
+{
+	Fixed_Monthly_Premium5 = null;
+}
+// Fixed_Monthly_Premium6
+Fixed_Monthly_Premium6 = records.getJSON("Fixed Monthly Premium6");
+if(Fixed_Monthly_Premium6 != null && Fixed_Monthly_Premium6 != "")
+{
+	decVal = Fixed_Monthly_Premium6.toDecimal();
+	decVal = decVal.round(2);
+	Fixed_Monthly_Premium6 = decVal.toString();
+}
+else
+{
+	Fixed_Monthly_Premium6 = null;
+}
+// Fixed_Monthly_Premium7
+Fixed_Monthly_Premium7 = records.getJSON("Fixed Monthly Premium7");
+if(Fixed_Monthly_Premium7 != null && Fixed_Monthly_Premium7 != "")
+{
+	decVal = Fixed_Monthly_Premium7.toDecimal();
+	decVal = decVal.round(2);
+	Fixed_Monthly_Premium7 = decVal.toString();
+}
+else
+{
+	Fixed_Monthly_Premium7 = null;
+}
+// Fixed_Monthly_Premium8
+Fixed_Monthly_Premium8 = records.getJSON("Fixed Monthly Premium8");
+if(Fixed_Monthly_Premium8 != null && Fixed_Monthly_Premium8 != "")
+{
+	decVal = Fixed_Monthly_Premium8.toDecimal();
+	decVal = decVal.round(2);
+	Fixed_Monthly_Premium8 = decVal.toString();
+}
+else
+{
+	Fixed_Monthly_Premium8 = null;
+}
+Upfront_Deposit_Premium1 = records.getJSON("Upfront Deposit Premium1").toString();
+Upfront_Deposit_Premium2 = records.getJSON("Upfront Deposit Premium2").toString();
+Upfront_Deposit_Premium3 = records.getJSON("Upfront Deposit Premium3").toString();
+Upfront_Deposit_Premium4 = records.getJSON("Upfront Deposit Premium4").toString();
+Upfront_Deposit_Premium5 = records.getJSON("Upfront Deposit Premium5").toString();
+Upfront_Deposit_Premium6 = records.getJSON("Upfront Deposit Premium6").toString();
+Upfront_Deposit_Premium7 = records.getJSON("Upfront Deposit Premium7").toString();
+Upfront_Deposit_Premium8 = records.getJSON("Upfront Deposit Premium8").toString();
+Credit_Limit_Fee1 = records.getJSON("Credit limit fee1").toString();
+Credit_Limit_Fee2 = records.getJSON("Credit limit fee2").toString();
+Credit_Limit_Fee3 = records.getJSON("Credit limit fee3").toString();
+Credit_Limit_Fee4 = records.getJSON("Credit limit fee4").toString();
+Credit_Limit_Fee5 = records.getJSON("Credit limit fee5").toString();
+Credit_Limit_Fee6 = records.getJSON("Credit limit fee6").toString();
+Credit_Limit_Fee7 = records.getJSON("Credit limit fee7").toString();
+Credit_Limit_Fee8 = records.getJSON("Credit limit fee8").toString();
+//adjustment premium rate
+Adjustment_Premium_Rate1 = records.getJSON("Adjustment Premium1").toString();
+Adjustment_Premium_Rate2 = records.getJSON("Adjustment Premium2").toString();
+Adjustment_Premium_Rate3 = records.getJSON("Adjustment Premium3").toString();
+Adjustment_Premium_Rate4 = records.getJSON("Adjustment Premium4").toString();
+Adjustment_Premium_Rate5 = records.getJSON("Adjustment Premium5").toString();
+Adjustment_Premium_Rate6 = records.getJSON("Adjustment Premium6").toString();
+Adjustment_Premium_Rate7 = records.getJSON("Adjustment Premium7").toString();
+Adjustment_Premium_Rate8 = records.getJSON("Adjustment Premium8").toString();
+if(Adjustment_Premium_Rate1 != null && Adjustment_Premium_Rate1 != "")
+{
+	Adjustment_Premium_Rate1 = Adjustment_Premium_Rate1.toDecimal() * 100;
+	Adjustment_Premium_Rate1 = Adjustment_Premium_Rate1.toString();
+}
+if(Adjustment_Premium_Rate2 != null && Adjustment_Premium_Rate2 != "")
+{
+	Adjustment_Premium_Rate2 = Adjustment_Premium_Rate2.toDecimal() * 100;
+	Adjustment_Premium_Rate2 = Adjustment_Premium_Rate2.toString();
+}
+if(Adjustment_Premium_Rate3 != null && Adjustment_Premium_Rate3 != "")
+{
+	Adjustment_Premium_Rate3 = Adjustment_Premium_Rate3.toDecimal() * 100;
+	Adjustment_Premium_Rate3 = Adjustment_Premium_Rate3.toString();
+}
+if(Adjustment_Premium_Rate4 != null && Adjustment_Premium_Rate4 != "")
+{
+	Adjustment_Premium_Rate4 = Adjustment_Premium_Rate4.toDecimal() * 100;
+	Adjustment_Premium_Rate4 = Adjustment_Premium_Rate4.toString();
+}
+if(Adjustment_Premium_Rate5 != null && Adjustment_Premium_Rate5 != "")
+{
+	Adjustment_Premium_Rate5 = Adjustment_Premium_Rate5.toDecimal() * 100;
+	Adjustment_Premium_Rate5 = Adjustment_Premium_Rate5.toString();
+}
+if(Adjustment_Premium_Rate6 != null && Adjustment_Premium_Rate6 != "")
+{
+	Adjustment_Premium_Rate6 = Adjustment_Premium_Rate6.toDecimal() * 100;
+	Adjustment_Premium_Rate6 = Adjustment_Premium_Rate6.toString();
+}
+if(Adjustment_Premium_Rate7 != null && Adjustment_Premium_Rate7 != "")
+{
+	Adjustment_Premium_Rate7 = Adjustment_Premium_Rate7.toDecimal() * 100;
+	Adjustment_Premium_Rate7 = Adjustment_Premium_Rate7.toString();
+}
+if(Adjustment_Premium_Rate8 != null && Adjustment_Premium_Rate8 != "")
+{
+	Adjustment_Premium_Rate8 = Adjustment_Premium_Rate8.toDecimal() * 100;
+	Adjustment_Premium_Rate8 = Adjustment_Premium_Rate8.toString();
+}
+//end
+// info Premium_Rate_TO1;
+// info Premium_Rate_TO2;
+// info Premium_Rate_TO3;
+// info Premium_Rate_TO4;
+// // info total;
+// // info SubTotal;
+updateMap = Map();
+updateMap.put("Anticipated_Annual_Turnover_1",Anticipated_Annual_Turnover1);
+updateMap.put("Anticipated_Annual_Turnover_2",Anticipated_Annual_Turnover2);
+updateMap.put("Anticipated_Annual_Turnover_3",Anticipated_Annual_Turnover3);
+updateMap.put("Anticipated_Annual_Turnover_4",Anticipated_Annual_Turnover4);
+updateMap.put("Anticipated_Annual_Turnover_6",Anticipated_Annual_Turnover6);
+updateMap.put("Anticipated_Annual_Turnover_5",Anticipated_Annual_Turnover5);
+updateMap.put("Anticipated_Annual_Turnover_8",Anticipated_Annual_Turnover8);
+updateMap.put("Anticipated_Annual_Turnover_7",Anticipated_Annual_Turnover7);
+updateMap.put("Option1",Option1);
+updateMap.put("Option2",Option2);
+updateMap.put("Option3",Option3);
+updateMap.put("Option4",Option4);
+updateMap.put("Option5",Option5);
+updateMap.put("Option6",Option6);
+updateMap.put("Option7",Option7);
+updateMap.put("Option8",Option8);
+if(Premium_Rate_TO1 != null || Premium_Rate_TO1 != "")
+{
+	info "Value found";
+	updateMap.put("Premium_Rate_TO1",Premium_Rate_TO1);
+}
+updateMap.put("Premium_Rate_TO2",Premium_Rate_TO2);
+updateMap.put("Premium_Rate_TO3",Premium_Rate_TO3);
+updateMap.put("Premium_Rate_TO4",Premium_Rate_TO4);
+updateMap.put("Premium_Rate_TO5",Premium_Rate_TO5);
+updateMap.put("Premium_Rate_TO6",Premium_Rate_TO6);
+updateMap.put("Premium_Rate_TO7",Premium_Rate_TO7);
+updateMap.put("Premium_Rate_TO8",Premium_Rate_TO8);
+if(Admin_Annual_Fee1 != null)
+{
+	info Admin_Annual_Fee1;
+	updateMap.put("Admin_Annual_Fee1","R " + Admin_Annual_Fee1.toString());
+}
+if(Admin_Annual_Fee2 != null)
+{
+	updateMap.put("Admin_Annual_Fee2","R " + Admin_Annual_Fee2.toString());
+}
+if(Admin_Annual_Fee3 != null)
+{
+	updateMap.put("Admin_Annual_Fee3","R " + Admin_Annual_Fee3.toString());
+}
+if(Admin_Annual_Fee4 != null)
+{
+	updateMap.put("Admin_Annual_Fee4","R " + Admin_Annual_Fee4.toString());
+}
+if(Admin_Annual_Fee5 != null)
+{
+	updateMap.put("Admin_Annual_Fee5","R " + Admin_Annual_Fee5.toString());
+}
+if(Admin_Annual_Fee6 != null)
+{
+	updateMap.put("Admin_Annual_Fee6","R " + Admin_Annual_Fee6.toString());
+}
+if(Admin_Annual_Fee7 != null)
+{
+	updateMap.put("Admin_Annual_Fee7","R " + Admin_Annual_Fee7.toString());
+}
+if(Admin_Annual_Fee8 != null)
+{
+	updateMap.put("Admin_Annual_Fee8","R " + Admin_Annual_Fee8.toString());
+}
+if(Non_Qualifying_Loss1 != null)
+{
+	updateMap.put("Non_Qualifying_Loss1","R " + Non_Qualifying_Loss1.toString());
+}
+if(Non_Qualifying_Loss2 != null)
+{
+	updateMap.put("Non_Qualifying_Loss2","R " + Non_Qualifying_Loss2.toString());
+}
+if(Non_Qualifying_Loss3 != null)
+{
+	updateMap.put("Non_Qualifying_Loss3","R " + Non_Qualifying_Loss3.toString());
+}
+if(Non_Qualifying_Loss4 != null)
+{
+	updateMap.put("Non_Qualifying_Loss4","R " + Non_Qualifying_Loss4.toString());
+}
+if(Non_Qualifying_Loss5 != null)
+{
+	updateMap.put("Non_Qualifying_Loss5","R " + Non_Qualifying_Loss5.toString());
+}
+if(Non_Qualifying_Loss6 != null)
+{
+	updateMap.put("Non_Qualifying_Loss6","R " + Non_Qualifying_Loss6.toString());
+}
+if(Non_Qualifying_Loss7 != null)
+{
+	updateMap.put("Non_Qualifying_Loss7","R " + Non_Qualifying_Loss7.toString());
+}
+if(Non_Qualifying_Loss8 != null)
+{
+	updateMap.put("Non_Qualifying_Loss8","R " + Non_Qualifying_Loss8.toString());
+}
+if(Limit_of_Discretion1 != null)
+{
+	updateMap.put("Limit_of_Discretion1","R " + Limit_of_Discretion1.toString());
+}
+if(Limit_of_Discretion2 != null)
+{
+	updateMap.put("Limit_of_Discretion2","R " + Limit_of_Discretion2.toString());
+}
+if(Limit_of_Discretion3 != null)
+{
+	updateMap.put("Limit_of_Discretion3","R " + Limit_of_Discretion3.toString());
+}
+if(Limit_of_Discretion4 != null)
+{
+	updateMap.put("Limit_of_Discretion4","R " + Limit_of_Discretion4.toString());
+}
+if(Limit_of_Discretion5 != null)
+{
+	updateMap.put("Limit_of_Discretion5","R " + Limit_of_Discretion5.toString());
+}
+if(Limit_of_Discretion6 != null)
+{
+	updateMap.put("Limit_of_Discretion6","R " + Limit_of_Discretion6.toString());
+}
+if(Limit_of_Discretion7 != null)
+{
+	updateMap.put("Limit_of_Discretion7","R " + Limit_of_Discretion7.toString());
+}
+if(Limit_of_Discretion8 != null)
+{
+	updateMap.put("Limit_of_Discretion8","R " + Limit_of_Discretion8.toString());
+}
+if(Aggregate_First_Loss1 != null)
+{
+	updateMap.put("Aggregate_First_Loss1","R " + Aggregate_First_Loss1.toString());
+}
+if(Aggregate_First_Loss2 != null)
+{
+	updateMap.put("Aggregate_First_Loss2","R " + Aggregate_First_Loss2.toString());
+}
+if(Aggregate_First_Loss3 != null)
+{
+	updateMap.put("Aggregate_First_Loss3","R " + Aggregate_First_Loss3.toString());
+}
+if(Aggregate_First_Loss4 != null)
+{
+	updateMap.put("Aggregate_First_Loss4","R " + Aggregate_First_Loss4.toString());
+}
+if(Aggregate_First_Loss5 != null)
+{
+	updateMap.put("Aggregate_First_Loss5","R " + Aggregate_First_Loss5.toString());
+}
+if(Aggregate_First_Loss6 != null)
+{
+	updateMap.put("Aggregate_First_Loss6","R " + Aggregate_First_Loss6.toString());
+}
+if(Aggregate_First_Loss7 != null)
+{
+	updateMap.put("Aggregate_First_Loss7","R " + Aggregate_First_Loss7.toString());
+}
+if(Aggregate_First_Loss8 != null)
+{
+	updateMap.put("Aggregate_First_Loss8","R " + Aggregate_First_Loss8.toString());
+}
+if(Maximum_Liability1 != null)
+{
+	updateMap.put("Maximum_Liability1","R " + Maximum_Liability1.toString());
+}
+if(Maximum_Liability2 != null)
+{
+	updateMap.put("Maximum_Liability2","R " + Maximum_Liability2.toString());
+}
+if(Maximum_Liability3 != null)
+{
+	updateMap.put("Maximum_Liability3","R " + Maximum_Liability3.toString());
+}
+if(Maximum_Liability4 != null)
+{
+	updateMap.put("Maximum_Liability4","R " + Maximum_Liability4.toString());
+}
+if(Maximum_Liability5 != null)
+{
+	updateMap.put("Maximum_Liability5","R " + Maximum_Liability5.toString());
+}
+if(Maximum_Liability6 != null)
+{
+	updateMap.put("Maximum_Liability6","R " + Maximum_Liability6.toString());
+}
+if(Maximum_Liability7 != null)
+{
+	updateMap.put("Maximum_Liability7","R " + Maximum_Liability7.toString());
+}
+if(Maximum_Liability8 != null)
+{
+	updateMap.put("Maximum_Liability8","R " + Maximum_Liability8.toString());
+}
+// updateMap.put("Admin_Annual_Fee1","R " + Admin_Annual_Fee1.toString());
+// updateMap.put("Admin_Annual_Fee2","R " + Admin_Annual_Fee2.toString());
+// updateMap.put("Admin_Annual_Fee3","R " + Admin_Annual_Fee3.toString());
+// updateMap.put("Admin_Annual_Fee4","R " + Admin_Annual_Fee4.toString());
+// updateMap.put("Admin_Annual_Fee5","R " + Admin_Annual_Fee5.toString());
+// updateMap.put("Admin_Annual_Fee6","R " + Admin_Annual_Fee6.toString());
+// updateMap.put("Admin_Annual_Fee7","R " + Admin_Annual_Fee7.toString());
+// updateMap.put("Admin_Annual_Fee8","R " + Admin_Annual_Fee8.toString());
+// updateMap.put("Non_Qualifying_Loss1","R " + Non_Qualifying_Loss1.toString());
+// updateMap.put("Non_Qualifying_Loss2","R " + Non_Qualifying_Loss2.toString());
+// updateMap.put("Non_Qualifying_Loss3","R " + Non_Qualifying_Loss3.toString());
+// updateMap.put("Non_Qualifying_Loss4","R " + Non_Qualifying_Loss4.toString());
+// updateMap.put("Non_Qualifying_Loss5","R " + Non_Qualifying_Loss5.toString());
+// updateMap.put("Non_Qualifying_Loss6","R " + Non_Qualifying_Loss6.toString());
+// updateMap.put("Non_Qualifying_Loss7","R " + Non_Qualifying_Loss7.toString());
+// updateMap.put("Non_Qualifying_Loss8","R " + Non_Qualifying_Loss8.toString());
+// updateMap.put("Limit_of_Discretion1","R " + Limit_of_Discretion1.toString());
+// updateMap.put("Limit_of_Discretion2","R " + Limit_of_Discretion2.toString());
+// updateMap.put("Limit_of_Discretion3","R " + Limit_of_Discretion3.toString());
+// updateMap.put("Limit_of_Discretion4","R " + Limit_of_Discretion4.toString());
+// updateMap.put("Limit_of_Discretion5","R " + Limit_of_Discretion5.toString());
+// updateMap.put("Limit_of_Discretion6","R " + Limit_of_Discretion6.toString());
+// updateMap.put("Limit_of_Discretion7","R " + Limit_of_Discretion7.toString());
+// updateMap.put("Limit_of_Discretion8","R " + Limit_of_Discretion8.toString());
+// updateMap.put("Aggregate_First_Loss1","R " + Aggregate_First_Loss1.toString());
+// updateMap.put("Aggregate_First_Loss2","R " + Aggregate_First_Loss2.toString());
+// updateMap.put("Aggregate_First_Loss3","R " + Aggregate_First_Loss3.toString());
+// updateMap.put("Aggregate_First_Loss4","R " + Aggregate_First_Loss4.toString());
+// updateMap.put("Aggregate_First_Loss5","R " + Aggregate_First_Loss5.toString());
+// updateMap.put("Aggregate_First_Loss6","R " + Aggregate_First_Loss6.toString());
+// updateMap.put("Aggregate_First_Loss7","R " + Aggregate_First_Loss7.toString());
+// updateMap.put("Aggregate_First_Loss8","R " + Aggregate_First_Loss8.toString());
+// updateMap.put("Maximum_Liability1","R " + Maximum_Liability1.toString());
+// updateMap.put("Maximum_Liability2","R " + Maximum_Liability2.toString());
+// updateMap.put("Maximum_Liability3","R " + Maximum_Liability3.toString());
+// updateMap.put("Maximum_Liability4","R " + Maximum_Liability4.toString());
+// updateMap.put("Maximum_Liability5","R " + Maximum_Liability5.toString());
+// updateMap.put("Maximum_Liability6","R " + Maximum_Liability6.toString());
+// updateMap.put("Maximum_Liability7","R " + Maximum_Liability7.toString());
+// updateMap.put("Maximum_Liability8","R " + Maximum_Liability8.toString());
+updateMap.put("Insured_Percentage1",Insured_Percentage1);
+updateMap.put("Insured_Percentage2",Insured_Percentage2);
+updateMap.put("Insured_Percentage3",Insured_Percentage3);
+updateMap.put("Insured_Percentage4",Insured_Percentage4);
+updateMap.put("Insured_Percentage5",Insured_Percentage5);
+updateMap.put("Insured_Percentage6",Insured_Percentage6);
+updateMap.put("Insured_Percentage7",Insured_Percentage7);
+updateMap.put("Insured_Percentage8",Insured_Percentage8);
+updateMap.put("Policy_Performance_Bonus1",Policy_Performance_Bonus1);
+updateMap.put("Policy_Performance_Bonus2",Policy_Performance_Bonus2);
+updateMap.put("Policy_Performance_Bonus3",Policy_Performance_Bonus3);
+updateMap.put("Policy_Performance_Bonus4",Policy_Performance_Bonus4);
+updateMap.put("Policy_Performance_Bonus5",Policy_Performance_Bonus5);
+updateMap.put("Policy_Performance_Bonus6",Policy_Performance_Bonus6);
+updateMap.put("Policy_Performance_Bonus7",Policy_Performance_Bonus7);
+updateMap.put("Policy_Performance_Bonus8",Policy_Performance_Bonus8);
+//Adding new feilds 
+//Anticipated_Annual_Turnover1
+updateMap.put("Anticipated_Annual_Turnover1",Anticipated_Annual_Turnover1);
+updateMap.put("Anticipated_Domestic_Turnover_Addition",Anticipated_Annual_Turnover2);
+//need to change
+updateMap.put("Anticipated_Annual_Turnover3",Anticipated_Annual_Turnover3);
+updateMap.put("Anticipated_Annual_Turnover4",Anticipated_Annual_Turnover4);
+updateMap.put("Anticipated_Annual_Turnover5",Anticipated_Annual_Turnover5);
+updateMap.put("Anticipated_Annual_Turnover6",Anticipated_Annual_Turnover6);
+updateMap.put("Anticipated_Annual_Turnover7",Anticipated_Annual_Turnover7);
+updateMap.put("Anticipated_Annual_Turnover8",Anticipated_Annual_Turnover8);
+//Anticipated_Annual_Premium1
+updateMap.put("Anticipated_Annual_Premium1","R " + Anticipated_Annual_Premium1);
+updateMap.put("Anticipated_Annual_Premium2","R " + Anticipated_Annual_Premium2);
+updateMap.put("Anticipated_Annual_Premium3","R " + Anticipated_Annual_Premium3);
+updateMap.put("Anticipated_Annual_Premium4","R " + Anticipated_Annual_Premium4);
+updateMap.put("Anticipated_Annual_Premium5","R " + Anticipated_Annual_Premium5);
+updateMap.put("Anticipated_Annual_Premium6","R " + Anticipated_Annual_Premium6);
+updateMap.put("Anticipated_Annual_Premium7","R " + Anticipated_Annual_Premium7);
+updateMap.put("Anticipated_Annual_Premium8","R " + Anticipated_Annual_Premium8);
+//Fixed_Monthly_Premium1
+updateMap.put("Fixed_Monthly_Premium1","R " + Fixed_Monthly_Premium1);
+updateMap.put("Fixed_Monthly_Premium2","R " + Fixed_Monthly_Premium2);
+updateMap.put("Fixed_Monthly_Premium3","R " + Fixed_Monthly_Premium3);
+updateMap.put("Fixed_Monthly_Premium4","R " + Fixed_Monthly_Premium4);
+updateMap.put("Fixed_Monthly_Premium5","R " + Fixed_Monthly_Premium5);
+updateMap.put("Fixed_Monthly_Premium6","R " + Fixed_Monthly_Premium6);
+updateMap.put("Fixed_Monthly_Premium7","R " + Fixed_Monthly_Premium7);
+updateMap.put("Fixed_Monthly_Premium8","R " + Fixed_Monthly_Premium8);
+//Upfront_Deposit_Premium1
+updateMap.put("Upfront_Deposit_Premium1","R " + Upfront_Deposit_Premium1);
+updateMap.put("Upfront_Deposit_Premium2","R " + Upfront_Deposit_Premium2);
+updateMap.put("Upfront_Deposit_Premium3","R " + Upfront_Deposit_Premium3);
+updateMap.put("Upfront_Deposit_Premium4","R " + Upfront_Deposit_Premium4);
+updateMap.put("Upfront_Deposit_Premium5","R " + Upfront_Deposit_Premium5);
+updateMap.put("Upfront_Deposit_Premium6","R " + Upfront_Deposit_Premium6);
+updateMap.put("Upfront_Deposit_Premium7","R " + Upfront_Deposit_Premium7);
+updateMap.put("Upfront_Deposit_Premium8","R " + Upfront_Deposit_Premium8);
+//Credit_Limit_Fee1
+updateMap.put("Credit_Limit_Fee1","R " + Credit_Limit_Fee1);
+updateMap.put("Credit_Limit_Fee2","R " + Credit_Limit_Fee2);
+updateMap.put("Credit_Limit_Fee3","R " + Credit_Limit_Fee3);
+updateMap.put("Credit_Limit_Fee4","R " + Credit_Limit_Fee4);
+updateMap.put("Credit_Limit_Fee5","R " + Credit_Limit_Fee5);
+updateMap.put("Credit_Limit_Fee6","R " + Credit_Limit_Fee6);
+updateMap.put("Credit_Limit_Fee7","R " + Credit_Limit_Fee7);
+updateMap.put("Credit_Limit_Fee8","R " + Credit_Limit_Fee8);
+//Adjusted Premium 
+updateMap.put("Adjustment_Premium_Rate1",Adjustment_Premium_Rate1);
+updateMap.put("Adjustment_Premium_Rate2",Adjustment_Premium_Rate2);
+updateMap.put("Adjustment_Premium_Rate3",Adjustment_Premium_Rate3);
+updateMap.put("Adjustment_Premium_Rate4",Adjustment_Premium_Rate4);
+updateMap.put("Adjustment_Premium_Rate5",Adjustment_Premium_Rate5);
+updateMap.put("Adjustment_Premium_Rate6",Adjustment_Premium_Rate6);
+updateMap.put("Adjustment_Premium_Rate7",Adjustment_Premium_Rate7);
+updateMap.put("Adjustment_Premium_Rate8",Adjustment_Premium_Rate8);
+//end
+info updateMap;
+update = zoho.crm.updateRecord("Deals",id,updateMap);
+info update;
+/// ----------------------- Fatch All Data------------------------------------->>>>>>>>>>>>>>>>>>>
+data = Map();
+response = zoho.sheet.getRecords(response1,"sheet1",data,"lombardsheet");
+//info response;
+return "Retrieved Information Successfully";

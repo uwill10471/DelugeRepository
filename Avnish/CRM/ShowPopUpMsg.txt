@@ -1,0 +1,28 @@
+
+/** 
+ * log("sample logging statement") --> can be used to print any data in the browser console.
+ * ZDK module can be used for customising the UI and other functionalities.
+ * return false to prevent <SAVE> action
+**/
+
+var email123 = ZDK.Page.getField('Phone').getValue();
+log(email123);
+
+
+var leads = email123;
+
+var leadsLength = leads.length;
+log(leadsLength);
+
+
+if (leadsLength != 10)
+{
+     ZDK.Client.showMessage('Please Enter Valid Phone Number.', { type: 'error' });
+    return false;
+    
+
+}
+else
+{
+
+}

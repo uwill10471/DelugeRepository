@@ -1,0 +1,111 @@
+// Retrieve the Deal record by its ID
+data_res = zoho.crm.getRecordById("Deals",DealId);
+currentDate = zoho.currentdate;
+workdriveFolderID = data_res.get("zohoworkdriveforcrm_Workdrive_Folder_ID");
+if(workdriveFolderID == null)
+{
+	// Get basic deal info
+	Deal_Name = data_res.get("Deal_Name");
+	client_id = "";
+	// Adjust if needed
+	folderName = client_id + "(" + Deal_Name + " " + currentDate + ")";
+	// Create the main folder in WorkDrive using the specified parent folder ID
+	create = zoho.workdrive.createFolder(folderName,"ldg4k45226fddd1854956a7fb96a08ac81785","workdrive");
+	if(create != null)
+	{
+		folderData = create.getJson("data");
+		subfolder_id = folderData.get("id");
+		mainPermalink = folderData.get("attributes").get("permalink");
+		info mainPermalink;
+		// Define the list of subfolders to create
+		subfolder_names = {"Client Purchase Order Document","Client Final Contract Document","SV Final Offer Document","Award Costing Sheet Document","Performance Bond Documents","Vendors' Offers Documents","RFP/RFI Documents","Customer PO Copy","Proposal1"};
+		// Loop through each subfolder name and create the folder in WorkDrive
+		for each  subfolder_name in subfolder_names
+		{
+			create_subfolder = zoho.workdrive.createFolder(subfolder_name,subfolder_id,"workdrive");
+			if(create_subfolder != null)
+			{
+				subfolder_data = create_subfolder.get("data");
+				subfolder_actual_name = subfolder_data.get("attributes").get("name");
+				if(subfolder_actual_name == "Proposal1")
+				{
+					Proposal_url = subfolder_data.get("attributes").get("permalink");
+				}
+				else if(subfolder_actual_name == "Client Final Contract Document")
+				{
+					Client_Final_Contract_Document_Folder_ID = subfolder_data.get("id");
+				}
+				else if(subfolder_actual_name == "Client Purchase Order Document")
+				{
+					Client_Purchase_Order_Document_Folder_ID = subfolder_data.get("id");
+				}
+				else if(subfolder_actual_name == "SV Final Offer Document")
+				{
+					SV_Final_Offer_Document_Folder_ID = subfolder_data.get("id");
+				}
+				else if(subfolder_actual_name == "Award Costing Sheet Document")
+				{
+					Award_Costing_Sheet_Document_Folder_ID = subfolder_data.get("id");
+				}
+				else if(subfolder_actual_name == "Performance Bond Documents")
+				{
+					Performance_Bond_Documents_Folder_ID = subfolder_data.get("id");
+				}
+				else if(subfolder_actual_name == "Vendors' Offers Documents")
+				{
+					Vendors_Offers_Documents_Folder_ID = subfolder_data.get("id");
+				}
+				else if(subfolder_actual_name == "RFP/RFI Documents")
+				{
+					RFP_RFI_Documents_Folder_ID = subfolder_data.get("id");
+				}
+				else if(subfolder_actual_name == "Customer PO Copy")
+				{
+					Customer_PO_Copy_Folder_ID = subfolder_data.get("id");
+				}
+			}
+		}
+		// Create a single update map for all folder details
+		updateMap = Map();
+		updateMap.put("zohoworkdriveforcrm_Workdrive_Folder_ID",subfolder_id);
+		updateMap.put("Folder_url",mainPermalink);
+		updateMap.put("Proposal_1_Folder_URL",Proposal_url);
+		updateMap.put("Client_Final_Contract_Document_Folder_ID",Client_Final_Contract_Document_Folder_ID);
+		updateMap.put("Client_Purchase_Order_Document_Folder_ID",Client_Purchase_Order_Document_Folder_ID);
+		updateMap.put("SV_Final_Offer_Document_Folder_ID",SV_Final_Offer_Document_Folder_ID);
+		updateMap.put("Award_Costing_Sheet_Document_Folder_ID",Award_Costing_Sheet_Document_Folder_ID);
+		updateMap.put("Performance_Bond_Documents_Folder_ID",Performance_Bond_Documents_Folder_ID);
+		updateMap.put("Vendors_Offers_Documents_Folder_ID",Vendors_Offers_Documents_Folder_ID);
+		updateMap.put("RFP_RFI_Documents_Folder_ID",RFP_RFI_Documents_Folder_ID);
+		updateMap.put("Customer_PO_Copy_Folder_ID",Customer_PO_Copy_Folder_ID);
+		updateMap.put("TCV_1",0);
+		updateMap.put("PTI_1",0);
+		updateMap.put("RA_1",0);
+		updateMap.put("Total_Cost_1",0);
+		// If needed, add Quotation_ID (ensure photos_id is defined)
+		// updateMap.put("Quotation_ID", photos_id);
+		// Update the Deal record with the folder details
+		update = zoho.crm.updateRecord("Deals",DealId,updateMap);
+		// Retrieve the updated Deal record to generate and update a unique Opportunity_ID
+		updatedDeal = zoho.crm.getRecordById("Deals",DealId);
+		Opportunity_ID = updatedDeal.get("Opportunity_ID");
+		Auto_Opportunity_No = updatedDeal.get("Opportunity_No");
+		countryName = updatedDeal.get("Country");
+		countryRecords = zoho.crm.searchRecords("Country","(Name:equals:" + countryName + ")");
+		Country_Code = countryRecords.getJSON("Country_Code");
+		uniqueId = zoho.currentdate.toString("yy");
+		info uniqueId;
+		CreateUNiqID = "SV" + Country_Code + Auto_Opportunity_No + "-" + uniqueId;
+		info CreateUNiqID;
+		idUpdateMap = Map();
+		idUpdateMap.put("Opportunity_ID",CreateUNiqID);
+		response = zoho.crm.updateRecord("Deals",DealId,idUpdateMap);
+	}
+}
+// Finally, update the Folder_url field with the complete URL path for the folder
+finalDeal = zoho.crm.getRecordById("Deals",DealId);
+folder_id = finalDeal.get("zohoworkdriveforcrm_Workdrive_Folder_ID");
+url = "https://workdrive.zoho.com/home/uanz16d66a4a0458c462fb3b4ebbffa382838/privatespace/folders/" + folder_id;
+leadinfo = {"Folder_url":url};
+finalResponse = zoho.crm.updateRecord("Deals",DealId,leadinfo);
+// info finalResponse;

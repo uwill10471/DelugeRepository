@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <script src="https://live.zwidgets.com/js-sdk/1.1/ZohoEmbededAppSDK.min.js"></script>
+    <title>Checkout Widget</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        height: 100vh;
+        background: linear-gradient(to right, #f6f8fa, #e9ecef);
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .card {
+        background: white;
+        border-radius: 20px;
+        padding: 40px;
+        max-width: 420px;
+        width: 90%;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        display: none;
+        animation: fadeIn 0.4s ease-in-out;
+      }
+
+      .active {
+        display: block;
+      }
+
+      h2 {
+        color: #2c3e50;
+        margin-bottom: 20px;
+      }
+
+      .info {
+        margin: 15px 0;
+        font-size: 1.1rem;
+      }
+
+      .label {
+        font-weight: bold;
+        color: #444;
+      }
+
+      .value {
+        font-weight: 500;
+        color: #222;
+      }
+
+      .loader-text {
+        font-style: italic;
+        color: #888;
+        font-size: 1rem;
+        animation: pulse 1.5s infinite ease-in-out;
+      }
+
+      button {
+        background-color: #2c3e50;
+        color: white;
+        padding: 12px 24px;
+        font-size: 1rem;
+        border: none;
+        border-radius: 8px;
+        margin-top: 25px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      button:hover {
+        background-color: #1b2a38;
+      }
+
+      .success-icon {
+        font-size: 2rem;
+        color: #28a745;
+        margin-bottom: 15px;
+      }
+
+      .error-icon {
+        font-size: 2rem;
+        color: #dc3545;
+        margin-bottom: 15px;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes pulse {
+        0% { opacity: 0.5; }
+        50% { opacity: 1; }
+        100% { opacity: 0.5; }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Loading Page -->
+    <div id="loadingPage" class="card active">
+      <h2>🔄 Preparing for checkout...</h2>
+      <div class="loader-text">Please wait while we get your location.</div>
+    </div>
+
+    <!-- Checkout Page -->
+    <div id="checkoutPage" class="card">
+      <h2>📍 Checkout Info</h2>
+      <div class="info"><span class="label">Location:</span> <span class="value" id="Location">...</span></div>
+      <div class="info"><span class="label">Date & Time:</span> <span class="value" id="DatenTime">...</span></div>
+      <button onclick="SaveToCRM()">Finish Checkout</button>
+    </div>
+
+    <!-- Success Page -->
+    <div id="successPage" class="card">
+      <div class="success-icon">✅</div>
+      <h2>Checkout Completed!</h2>
+      <p>Your checkout has been saved successfully.</p>
+    </div>
+
+    <!-- Error Page -->
+    <div id="errorPage" class="card">
+      <div class="error-icon">❌</div>
+      <h2>Something went wrong!</h2>
+      <p>We couldn’t complete the checkout.</p>
+      <button onclick="retry()">Try Again</button>
+    </div>
+
+    <script>
+      let locationData = "";
+      let currentdatantime = "";
+      let recordId;
+
+      const showPage = (idToShow) => {
+        document.querySelectorAll('.card').forEach(card => card.classList.remove('active'));
+        document.getElementById(idToShow).classList.add('active');
+      };
+
+      async function collectLocationData() {
+        if (!navigator.geolocation) {
+          showPage("errorPage");
+          return;
+        }
+
+        navigator.geolocation.getCurrentPosition(
+          async (position) => {
+            try {
+              const lat = position.coords.latitude;
+              const lon = position.coords.longitude;
+
+              const response = await fetch(`https://nominatim.openstreetmap.org/reverse?lat=${lat}&lon=${lon}&format=json`);
+              const data = await response.json();
+
+              const ind = data.address.industrial || "";
+              const plc = data.address.state_district || data.address.town || "";
+              const state = data.address.state || "";
+              const country = data.address.country || "";
+              const postcode = data.address.postcode || "";
+
+              locationData = `${ind} ${plc} ${state}, ${country}, ${postcode}`.trim();
+              document.getElementById("Location").textContent = locationData;
+
+              const now = new Date();
+              const date = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+              const time = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')}`;
+              currentdatantime = `${date} ${time}`;
+              document.getElementById("DatenTime").textContent = currentdatantime;
+
+              showPage("checkoutPage");
+            } catch (err) {
+              console.error("Geolocation error:", err);
+              showPage("errorPage");
+            }
+          },
+          (error) => {
+            console.error("Error getting location:", error);
+            showPage("errorPage");
+          }
+        );
+      }
+
+      function SaveToCRM() {
+        const config = {
+          Entity: "Events",
+          APIData: {
+            id: recordId,
+            Checkout_Location: locationData,
+            Checkout_Time: currentdatantime
+          },
+          Trigger: ["workflow"]
+        };
+
+        ZOHO.CRM.API.updateRecord(config)
+          .then(response => {
+            if (response.data && response.data[0].code === "SUCCESS") {
+              showPage("successPage");
+              
+            } else {
+              showPage("errorPage");
+            }
+          })
+          .catch(error => {
+            console.error("CRM update error:", error);
+            showPage("errorPage");
+          });
+      }
+
+      function retry() {
+        showPage("loadingPage");
+        collectLocationData();
+      }
+
+      ZOHO.embeddedApp.on("PageLoad", function (data) {
+        recordId = data.EntityId[0];
+      });
+
+      ZOHO.embeddedApp.init();
+
+      window.onload = () => {
+        collectLocationData();
+      };
+    </script>
+  </body>
+</html>
