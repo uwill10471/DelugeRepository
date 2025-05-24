@@ -1,0 +1,56 @@
+res = zoho.crm.getRecordById("Deals",id);
+EmptyMap = Map();
+Row_Data_Map = Map();
+// //
+Broker_Information1 = res.get("Broker_Information1");
+// info Broker_Information1;
+if(res.get("Disable_Button_1") == false)
+{
+	index = 1;
+	response = SheetID.subString(34,71);
+	for each  ele in Broker_Information1
+	{
+		Email = ele.get("Email_Address");
+		info Email;
+		emailVariable = "Email" + index;
+		Row_Data_Map.put(emailVariable,Email);
+		// 		info emailVariable;
+		// 		info Email;
+		index = index + 1;
+		Add_Row_to_Log_Response = zoho.sheet.createRecords(response,SheetName,Row_Data_Map,EmptyMap,"lombardsheet");
+		//Add_Row_to_Log_Response = zoho.sheet.createRecords(response,SheetName,Row_Data_Map,EmptyMap);
+	}
+	// //
+	// Company = ifnull(res.get("Company"),"");
+	Type_Of_Policy = ifnull(res.get("Type_of_Policy"),"");
+	info Type_Of_Policy;
+	Date_Received = ifnull(res.get("Date_Received1"),"");
+	info "Date recieve is -" + Date_Received;
+	Deal_Name = ifnull(res.get("Deal_Name"),"");
+	Policyholder_Name = ifnull(res.get("Policyholder_Name"),"");
+	Nature_of_Business = ifnull(res.get("Nature_of_Business"),"");
+	Value_of_Guarantee = ifnull(res.get("Value_of_Guarantee"),"");
+	Value_of_guarantee_currency = ifnull(res.get("Value_of_guarantee_currency"),"");
+	info Value_of_guarantee_currency;
+	Exposure = ifnull(res.get("Exposure"),"");
+	//Row_Data_Map.put("Name",Company);
+	Row_Data_Map.put("Deal Name",Deal_Name);
+	Row_Data_Map.put("Type of Cover:",Type_Of_Policy);
+	Row_Data_Map.put("Date received:",Date_Received);
+	Row_Data_Map.put("Nature of Business:",Nature_of_Business);
+	Row_Data_Map.put("Exposure",Exposure);
+	Row_Data_Map.put("Policyholder Name:",Policyholder_Name);
+	Row_Data_Map.put("Total",Value_of_Guarantee + Value_of_guarantee_currency);
+	Add_Row_to_Log_Response = zoho.sheet.createRecords(response,SheetName,Row_Data_Map,EmptyMap,"lombardsheet");
+	//Add_Row_to_Log_Response = zoho.sheet.createRecords(response,SheetName,Row_Data_Map,EmptyMap);
+	info "===========================";
+	info "LOG RESPONSE:";
+	info Add_Row_to_Log_Response;
+	info "===========================";
+	button_update = zoho.crm.updateRecord("Deals",id,{'Disable_Button_1':true});
+	return "Added Information Successfully";
+}
+else
+{
+	return "Already Added Information";
+}

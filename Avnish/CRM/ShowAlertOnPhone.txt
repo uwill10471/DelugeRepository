@@ -1,0 +1,7 @@
+var field_obj1 = ZDK.Page.getField('Phone');
+ade = field_obj1.getValue();
+afd = ade.length;
+
+if (afd != 10) {
+    ZDK.Client.showAlert('Please Enter A Valid Phone Number ');
+}

@@ -1,0 +1,19 @@
+data = zoho.crm.getRecordById("Deals",id);
+//info data;
+Broker = data.get("Broker");
+info Broker;
+//Broker = "Building Credit Manageement (Pty) Ltd";
+allRecords = zoho.crm.getRecords("Brokerage");
+for each  rec in allRecords
+{
+	if(rec.get("Name") == Broker)
+	{
+		// info rec;
+		FSP_Number = rec.get("FSP_Number");
+		info FSP_Number;
+		data1 = Map();
+		data1.put("Broker_Information1",{{"Brokerages":Broker,"FSP_Number":FSP_Number}});
+		abc = zoho.crm.updateRecord("Deals",id,data1);
+		info abc;
+	}
+}

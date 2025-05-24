@@ -1,0 +1,195 @@
+// Fetch record data
+record_data = zoho.crm.getRecordById("Deals",id);
+info "Fetched Deal Record: " + record_data;
+// Client Final Contract Documents
+Client_Final_Contract_Documents = record_data.get("Client_Final_Contract_Document");
+folder_ID = record_data.get("Client_Final_Contract_Document_Folder_ID");
+info "Client_Final_Contract_Document Folder ID: " + folder_ID;
+if(Client_Final_Contract_Documents != null)
+{
+	for each  file in Client_Final_Contract_Documents
+	{
+		attachment_ID = file.get("attachment_Id");
+		fileName = file.get("file_Name");
+		info "Processing File: " + fileName;
+		response = invokeurl
+		[
+			url :"https://www.zohoapis.com/crm/v7/Deals/" + id + "/Attachments/" + attachment_ID
+			type :GET
+			connection:"crm"
+		];
+		if(response != null)
+		{
+			res = zoho.workdrive.uploadFile(response,folder_ID,fileName,true,"workdrive");
+			info "Upload Response: " + res;
+		}
+	}
+}
+// Client Purchase Order Documents
+Client_Purchase_Order_Document = record_data.get("Client_Purchase_Order_Document");
+folder_ID = record_data.get("Client_Purchase_Order_Document_Folder_ID");
+info "Client_Purchase_Order_Document Folder ID: " + folder_ID;
+if(Client_Purchase_Order_Document != null)
+{
+	for each  file in Client_Purchase_Order_Document
+	{
+		attachment_ID = file.get("attachment_Id");
+		fileName = file.get("file_Name");
+		info "Processing File: " + fileName;
+		response = invokeurl
+		[
+			url :"https://www.zohoapis.com/crm/v7/Deals/" + id + "/Attachments/" + attachment_ID
+			type :GET
+			connection:"crm"
+		];
+		if(response != null)
+		{
+			res = zoho.workdrive.uploadFile(response,folder_ID,fileName,true,"workdrive");
+			info "Upload Response: " + res;
+		}
+	}
+}
+// SV Final Offer Document
+SV_Final_Offer_Document = record_data.get("SV_Final_Offer_Document");
+folder_ID = record_data.get("SV_Final_Offer_Document_Folder_ID");
+info "SV_Final_Offer_Document Folder ID: " + folder_ID;
+if(SV_Final_Offer_Document != null)
+{
+	for each  file in SV_Final_Offer_Document
+	{
+		attachment_ID = file.get("attachment_Id");
+		fileName = file.get("file_Name");
+		info "Processing File: " + fileName;
+		response = invokeurl
+		[
+			url :"https://www.zohoapis.com/crm/v7/Deals/" + id + "/Attachments/" + attachment_ID
+			type :GET
+			connection:"crm"
+		];
+		if(response != null)
+		{
+			res = zoho.workdrive.uploadFile(response,folder_ID,fileName,true,"workdrive");
+			info "Upload Response: " + res;
+		}
+	}
+}
+// Award Costing Sheet Document
+Award_Costing_Sheet_Document = record_data.get("Award_Costing_Sheet_Document");
+folder_ID = record_data.get("Award_Costing_Sheet_Document_Folder_ID");
+info "Award_Costing_Sheet_Document Folder ID: " + folder_ID;
+if(Award_Costing_Sheet_Document != null)
+{
+	for each  file in Award_Costing_Sheet_Document
+	{
+		attachment_ID = file.get("attachment_Id");
+		fileName = file.get("file_Name");
+		info "Processing File: " + fileName;
+		response = invokeurl
+		[
+			url :"https://www.zohoapis.com/crm/v7/Deals/" + id + "/Attachments/" + attachment_ID
+			type :GET
+			connection:"crm"
+		];
+		if(response != null)
+		{
+			res = zoho.workdrive.uploadFile(response,folder_ID,fileName,true,"workdrive");
+			info "Upload Response: " + res;
+		}
+	}
+}
+// Performance Bond Documents
+Performance_Bond_Documents = record_data.get("Performance_Bond_Documents");
+folder_ID = record_data.get("Performance_Bond_Documents_Folder_ID");
+info "Performance_Bond_Documents Folder ID: " + folder_ID;
+if(Performance_Bond_Documents != null)
+{
+	for each  file in Performance_Bond_Documents
+	{
+		attachment_ID = file.get("attachment_Id");
+		fileName = file.get("file_Name");
+		info "Processing File: " + fileName;
+		response = invokeurl
+		[
+			url :"https://www.zohoapis.com/crm/v7/Deals/" + id + "/Attachments/" + attachment_ID
+			type :GET
+			connection:"crm"
+		];
+		if(response != null)
+		{
+			res = zoho.workdrive.uploadFile(response,folder_ID,fileName,true,"workdrive");
+			info "Upload Response: " + res;
+		}
+	}
+}
+// Vendors Offers Documents
+Vendors_Offers_Documents = record_data.get("Vendors_Offers_Documents");
+folder_ID = record_data.get("Vendors_Offers_Documents_Folder_ID");
+info "Vendors_Offers_Documents Folder ID: " + folder_ID;
+if(Vendors_Offers_Documents != null)
+{
+	for each  file in Vendors_Offers_Documents
+	{
+		attachment_ID = file.get("attachment_Id");
+		fileName = file.get("file_Name");
+		info "Processing File: " + fileName;
+		response = invokeurl
+		[
+			url :"https://www.zohoapis.com/crm/v7/Deals/" + id + "/Attachments/" + attachment_ID
+			type :GET
+			connection:"crm"
+		];
+		if(response != null)
+		{
+			res = zoho.workdrive.uploadFile(response,folder_ID,fileName,true,"workdrive");
+			info "Upload Response: " + res;
+		}
+	}
+}
+// RFI/RFP Documents
+RFP_Documents = record_data.get("Attachments");
+folder_ID = record_data.get("RFP_RFI_Documents_Folder_ID");
+info "RFP_RFI_Documents_Folder_ID: " + folder_ID;
+if(RFP_Documents != null)
+{
+	for each  file in RFP_Documents
+	{
+		attachment_ID = file.get("attachment_Id");
+		fileName = file.get("file_Name");
+		info "Processing File: " + fileName;
+		response = invokeurl
+		[
+			url :"https://www.zohoapis.com/crm/v7/Deals/" + id + "/Attachments/" + attachment_ID
+			type :GET
+			connection:"crm"
+		];
+		if(response != null)
+		{
+			res = zoho.workdrive.uploadFile(response,folder_ID,fileName,true,"workdrive");
+			info "Upload Response: " + res;
+		}
+	}
+}
+// Customer PO Copy Documents
+Customer_PO_CopyDocuments = record_data.get("Customer_PO_Copy");
+folder_ID = record_data.get("Customer_PO_Copy_Folder_ID");
+info "Customer_PO_Copy_Folder_ID: " + folder_ID;
+if(Customer_PO_CopyDocuments != null)
+{
+	for each  file in Customer_PO_CopyDocuments
+	{
+		attachment_ID = file.get("attachment_Id");
+		fileName = file.get("file_Name");
+		info "Processing File: " + fileName;
+		response = invokeurl
+		[
+			url :"https://www.zohoapis.com/crm/v7/Deals/" + id + "/Attachments/" + attachment_ID
+			type :GET
+			connection:"crm"
+		];
+		if(response != null)
+		{
+			res = zoho.workdrive.uploadFile(response,folder_ID,fileName,true,"workdrive");
+			info "Upload Response: " + res;
+		}
+	}
+}

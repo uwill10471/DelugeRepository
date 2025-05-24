@@ -1,0 +1,34 @@
+
+/** 
+ * log("sample logging statement") --> can be used to print any data in the browser console.
+ * ZDK module can be used for customising the UI and other functionalities.
+ * return false to prevent <SAVE> action
+**/
+
+accountID = ZDK.Page.getField("Account_Name").getValue();  // Get the selected Account Name value
+
+dealField = ZDK.Page.getField("Contact_Person");
+
+log("Selected Account ID:", accountID);
+
+
+
+
+// Clear the Deal Names field whenever Account Name is changed or cleared
+dealField.setValue(null);  // Reset Deal Names field to be empty
+
+if (accountID != null && accountID.id != null) {
+//     // If an Account Name is selected, filter the Deal Names field to show only related deals
+//     console.log("Filtering deals for Account ID:", accountID.id);
+    
+//     // Set criteria for the Deal Names field to filter based on the selected Account
+    dealField.setCriteria("(Account_Name:equals:" + accountID.id + ")", { filterOnSearch: true });
+    
+//     // Automatically populate the Deal Names field with the related deals
+    // fetchRelatedDeals(accountID.id);  // Call the function to fetch related deals and auto-populate
+    
+} else {
+    // If no Account Name is selected, clear the filter and reset the Deal Names field to show all deals
+    console.log("No Account selected. Showing all deals.");
+    dealField.clearCriteria();  // Clear the filter
+}
