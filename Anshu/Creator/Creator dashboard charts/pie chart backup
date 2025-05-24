@@ -1,0 +1,499 @@
+<%{
+	furit = Fruit_Type[Fruit_Type == "Apples"];
+	if(input.year2 == null)
+	{
+		yearVal = "2024";
+		prevyearVal = "2023";
+	}
+	else
+	{
+		yearVal = input.year2;
+		prevyearVal = input.year2.toNumber() - 1;
+	}
+	prevyearVal = prevyearVal.toString();
+	LastprevyearVal = prevyearVal.toNumber() - 1;
+	LastprevyearVal = LastprevyearVal.toString();
+	LastprevfirstDate = ("01-Jan-" + LastprevyearVal).toDate();
+	LastprevlastDate = ("01-Dec-" + (LastprevyearVal.toNumber() + 1).toString()).toDate().addDay(-1);
+	prevfirstDate = ("01-Jan-" + prevyearVal).toDate();
+	prevlastDate = ("01-Dec-" + (prevyearVal.toNumber() + 1).toString()).toDate().addDay(-1);
+	firstDate = ("01-Jan-" + yearVal).toDate();
+	lastDate = ("01-Dec-" + (yearVal.toNumber() + 1).toString()).toDate().addDay(-1);
+	variety = List();
+	variety.add("Pink Lady");
+	variety.add("Granny Smith");
+	variety.add("Golden Delicious");
+	variety.add("Top Red");
+	variety.add("Sundowner / Crisp Red");
+	variety.add("Rosy Glow");
+	variety.add("Fuji");
+	variety.add("Brae Burn");
+	variety.add("Big Bucks");
+	allVarietyData = List();
+	totalAllBins = 0.0;
+	prevtotalAllBins = 0.0;
+	for each  vName in variety
+	{
+		if(vName == "Golden Delicious")
+		{
+			varietyRec = Varietal_Data[ID == 4563295000000030023];
+		}
+		else
+		{
+			varietyRec = Varietal_Data[Varietal == vName];
+		}
+		LastprevlocalExportTonnes = 0.0;
+		LastprevlocalJuiceTonnes = 0.0;
+		prevlocalExportBins = 0.0;
+		prevlocalJuiceBins = 0.0;
+		prevlocalExportTonnes = 0.0;
+		prevlocalJuiceTonnes = 0.0;
+		prevlocalExportHectare = 0.0;
+		prevlocalJuiceHectare = 0.0;
+		localExportBins = 0.0;
+		localJuiceBins = 0.0;
+		localExportTonnes = 0.0;
+		localJuiceTonnes = 0.0;
+		localExportHectare = 0.0;
+		localJuiceHectare = 0.0;
+		if(varietyRec != null)
+		{
+			binRecords = Capture_Form[Varietal1 == varietyRec.ID && Fruit_Type == furit.ID && Date_Picked >= firstDate && Date_Picked <= lastDate];
+			for each  bRec in binRecords
+			{
+				if(bRec.Grade_Pears_Apples == "Export")
+				{
+					localExportBins = localExportBins + bRec.Bin_Count_for_the_Day;
+					localExportHectare = localExportHectare + bRec.Block_Hectare_Size;
+					localExportTonnes = localExportTonnes + bRec.Tonnes;
+				}
+				if(bRec.Grade_Pears_Apples == "Juice")
+				{
+					localJuiceBins = localJuiceBins + bRec.Bin_Count_for_the_Day;
+					localJuiceHectare = localJuiceHectare + bRec.Block_Hectare_Size;
+					localJuiceTonnes = localJuiceTonnes + bRec.Tonnes;
+				}
+			}
+		}
+		if(varietyRec != null)
+		{
+			prevbinRecords = Capture_Form[Varietal1 == varietyRec.ID && Fruit_Type == furit.ID && Date_Picked >= prevfirstDate && Date_Picked <= prevlastDate];
+			for each  bRec in prevbinRecords
+			{
+				if(bRec.Grade_Pears_Apples == "Export")
+				{
+					prevlocalExportBins = prevlocalExportBins + bRec.Bin_Count_for_the_Day;
+					prevlocalExportHectare = prevlocalExportHectare + bRec.Block_Hectare_Size;
+					prevlocalExportTonnes = prevlocalExportTonnes + bRec.Tonnes;
+				}
+				if(bRec.Grade_Pears_Apples == "Juice")
+				{
+					prevlocalJuiceBins = prevlocalJuiceBins + bRec.Bin_Count_for_the_Day;
+					prevlocalJuiceHectare = prevlocalJuiceHectare + bRec.Block_Hectare_Size;
+					prevlocalJuiceTonnes = prevlocalJuiceTonnes + bRec.Tonnes;
+				}
+			}
+		}
+		if(varietyRec != null)
+		{
+			LastprevbinRecords = Capture_Form[Varietal1 == varietyRec.ID && Fruit_Type == furit.ID && Date_Picked >= LastprevfirstDate && Date_Picked <= LastprevlastDate];
+			for each  bRec in LastprevbinRecords
+			{
+				if(bRec.Grade_Pears_Apples == "Export")
+				{
+					LastprevlocalExportTonnes = LastprevlocalExportTonnes + bRec.Tonnes;
+				}
+				if(bRec.Grade_Pears_Apples == "Juice")
+				{
+					LastprevlocalJuiceTonnes = LastprevlocalJuiceTonnes + bRec.Tonnes;
+				}
+			}
+		}
+		localTotalBins = localExportBins + localJuiceBins;
+		localTotalTonnes = localExportTonnes + localJuiceTonnes;
+		localTotalHectare = localExportHectare + localJuiceHectare;
+		totalAllBins = totalAllBins + localTotalBins;
+		prevlocalTotalBins = prevlocalExportBins + prevlocalJuiceBins;
+		prevlocalTotalTonnes = prevlocalExportTonnes + prevlocalJuiceTonnes;
+		prevlocalTotalHectare = prevlocalExportHectare + prevlocalJuiceHectare;
+		prevtotalAllBins = prevtotalAllBins + prevlocalTotalBins;
+		LastprevlocalTotalTonnes = LastprevlocalExportTonnes + LastprevlocalJuiceTonnes;
+		vMap = Map();
+		vMap.put("name",vName);
+		vMap.put("ExportvarietyBins",localExportBins);
+		vMap.put("JuicevarietyBins",localJuiceBins);
+		vMap.put("totalvarietyBins",localTotalBins);
+		vMap.put("ExportvarietyTonnes",localExportTonnes);
+		vMap.put("JuicevarietyTonnes",localJuiceTonnes);
+		vMap.put("totalvarietyTonnes",localTotalTonnes);
+		vMap.put("ExportvarietyHectares",localExportHectare);
+		vMap.put("JuicevarietyHectares",localJuiceHectare);
+		vMap.put("totalvarietyHectares",localTotalHectare);
+		vMap.put("prevExportvarietyBins",prevlocalExportBins);
+		vMap.put("prevJuicevarietyBins",prevlocalJuiceBins);
+		vMap.put("prevtotalvarietyBins",prevlocalTotalBins);
+		vMap.put("prevExportvarietyTonnes",prevlocalExportTonnes);
+		vMap.put("prevJuicevarietyTonnes",prevlocalJuiceTonnes);
+		vMap.put("prevtotalvarietyTonnes",prevlocalTotalTonnes);
+		vMap.put("LastprevtotalvarietyTonnes",LastprevlocalTotalTonnes);
+		vMap.put("prevExportvarietyHectares",prevlocalExportHectare);
+		vMap.put("prevJuicevarietyHectares",prevlocalJuiceHectare);
+		vMap.put("prevtotalvarietyHectares",prevlocalTotalHectare);
+		allVarietyData.add(vMap);
+	}
+	for each  v in allVarietyData
+	{
+		varBins = v.get("totalvarietyBins").toNumber();
+		percent = 0.0;
+		if(totalAllBins > 0)
+		{
+			percent = varBins / totalAllBins * 100;
+		}
+		percent = percent.round(4);
+		v.put("percent",percent);
+	}
+	slices = List();
+	lastAngle = 0.0;
+	for each  v in allVarietyData
+	{
+		pct = v.get("percent").toNumber();
+		sliceAngle = pct * 3.6;
+		startAngle = lastAngle;
+		endAngle = lastAngle + sliceAngle;
+		lastAngle = endAngle;
+		sMap = Map();
+		sMap.put("name",v.get("name"));
+		sMap.put("startAngle",startAngle);
+		sMap.put("endAngle",endAngle);
+		sMap.put("percent",pct);
+		sMap.put("colorIndex",slices.size());
+		slices.add(sMap);
+	}
+	colors = List();
+	colors.add("#ff1493");
+	colors.add("#228b22");
+	colors.add("#daa520");
+	colors.add("#ff8c00");
+	colors.add("#808000");
+	colors.add("#000000");
+	colors.add("#a05a2c");
+	colors.add("#4a6c5d");
+	colors.add("#b22222");
+	conicStr = "";
+	for each  s in slices
+	{
+		c = colors.get(s.get("colorIndex").toNumber());
+		sa = s.get("startAngle");
+		ea = s.get("endAngle");
+		conicStr = conicStr + c + " " + sa.toString() + "deg " + ea.toString() + "deg, ";
+	}
+	if(conicStr.endsWith(", "))
+	{
+		conicStr = conicStr.subString(0,conicStr.length() - 2);
+	}
+	gradientStr = "conic-gradient(" + conicStr + ")";
+	%>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Apple Varietal Split <%=yearVal%></title>
+  <style>
+    body {
+      background-color: #d0d2d6; color: #000; padding: 20px; font-family: Arial, sans-serif;
+    }
+    h1 {
+      text-align: center; margin-bottom: 20px; font-size: 24px; font-weight: bold;
+    }
+    .container {
+      display: flex; flex-wrap: wrap; max-width: 1200px; margin: 0 auto;
+       
+    }
+    .left-section {
+      flex: 1; min-width: 300px; margin-right: 20px;
+    }
+    .right-section {
+      flex: 1; min-width: 300px; text-align: center;
+    }
+
+   
+    .pie-title {
+      font-size: 20px; font-weight: bold; margin-bottom: 15px;
+    }
+    .pie-chart {
+      width: 300px; height: 300px; margin: 0 auto 20px auto;
+      border-radius: 50%; background: <%=gradientStr%>;
+	   background-color: #fff;
+      
+	  box-shadow: 0 2px 4px rgba(0.1,0.1,0.1,0.5);
+    }
+    .legend {
+      display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;
+    }
+    .legend-item {
+      display: flex; align-items: center; font-size: 14px;
+    }
+    .legend-color {
+      width: 14px; height: 14px; margin-right: 5px; border: 1px solid #999;
+    }
+
+    
+    .card-grid {
+      display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 20px;
+	  margin-top:50px; margin-right:30px;
+    }
+    .variety-card {
+      background-color: #fff; border: 1px solid #ccc; padding: 10px;
+      text-align: center; min-height: 70px;
+      display: flex; flex-direction: column; justify-content: center;
+	   background-color: #fff;
+      border-radius: 8px;
+	  box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    }
+    .variety-name {
+      font-weight: bold; margin-bottom: 3px; font-size: 14px;
+	  
+    }
+    .variety-hectare {
+      font-size: 12px; margin-bottom: 3px;
+	    font-weight:bold;
+    }
+    .variety-percent {
+      font-size: 12px; color: #666;
+	  font-weight:bold;
+    }
+
+   
+    .year-box {
+      background-color: #fff; border: 1px solid #ccc; text-align: center;
+      padding: 20px; margin-top: 20px;
+    }
+    .year-value {
+      font-size: 36px; font-weight: bold; margin-bottom: 10px;
+    }
+    .year-label {
+      font-size: 14px; color: #666;
+    }
+
+    .variety-stats-container {
+      margin-top: 40px;
+	 
+    }
+    .variety-stats-block {
+      background-color: #fff; border: 1px solid #ccc;
+      padding: 15px; margin-bottom: 15px;
+	  text-align:center;
+	    background-color: #fff;
+      border-radius: 8px;
+	  box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+    }
+    .variety-block-header {
+      font-size: 18px; font-weight: bold; margin-bottom: 5px;
+	  background-color:#fff;
+    }
+    .variety-block-subheader {
+      font-size: 14px; color: #666; margin-bottom: 10px;
+	  background-color:#fff;
+    }
+    .stats-row {
+      display: flex; flex-wrap: wrap; gap: 20px; margin-top: 10px;
+	  justify-content:space-between;
+	  
+    }
+    .stat-col {
+      min-width: 120px; 
+    }
+    .stat-label {
+      font-size: 12px; color: #666;
+    }
+    .stat-value {
+      font-size: 16px; font-weight: bold; margin: 3px 0;
+    }
+    .stat-subvalue {
+      font-size: 12px; color: #999;
+    }
+	.export{
+		color :#4a6c5d;
+		font-weight: bolder;
+	}
+	.juice{
+		color : #a05a2c;
+		font-weight: bolder;
+	}
+	.total{
+		color : #4d3c43;
+		font-weight: bolder;
+	}
+  </style>
+</head>
+<body>
+<div style="height:80px; background-color:#854628; color:#fff; display:flex; justify-content:center; align-items:center;">
+  <div style="">
+    <h1 style="margin:0;">APPLES VARIETAL HARVEST BREAKDOWN</h1>
+  </div>
+</div>
+
+
+<br><br> 
+
+  <!-- TOP SECTION: Variety Cards (left) & Pie Chart (right) -->
+  <div class="container">
+  	
+    <!-- LEFT SECTION: Variety Cards + Year Box -->
+    <div class="left-section">
+  <div style="text-align: center;">
+    <h3 class="pie-title" style="margin:0;">APPLES VARIETALS</h3>
+  </div>
+      <!-- Variety Cards: Show hectares & % of apples (by bins) -->
+      <div class="card-grid">
+<%
+	for each  v in allVarietyData
+	{
+		varName = v.get("name");
+		varH = v.get("totalvarietyHectares").toNumber();
+		varPct = v.get("percent").toNumber();
+		// % of total bins/apples
+		%>
+<div class="variety-card">
+          <div class="variety-name"><%=varName%></div>
+          <div class="variety-hectare"><%=varH.round(2)%> HECTARES</div>
+          <div class="variety-percent"><%=varPct.round(2)%>% </div>
+        </div>
+<%
+	}
+	%>
+</div>
+
+    </div>
+
+    <!-- RIGHT SECTION: Pie Chart + Legend -->
+    <div class="right-section">
+      
+      <div class="pie-chart"></div>
+      <div class="legend">
+<%
+	indexCounter = 0;
+	for each  vRec in allVarietyData
+	{
+		cHex = colors.get(indexCounter);
+		cName = vRec.get("name");
+		%>
+<div class="legend-item">
+          <div class="legend-color" style="background-color:<%=cHex%>;"></div>
+          <div><%=cName%></div>
+        </div>
+<%
+		indexCounter = indexCounter + 1;
+	}
+	%>
+</div>
+    </div>
+  </div>
+
+  <!-- BELOW THE PIE CHART: DETAILED STATS PER VARIETY -->
+  <div class="variety-stats-container">
+<%
+	for each  v in allVarietyData
+	{
+		varName = v.get("name");
+		totalVarietyBins = v.get("totalvarietyBins").toNumber();
+		exportVarietyBins = v.get("ExportvarietyBins").toNumber();
+		juiceVarietyBins = v.get("JuicevarietyBins").toNumber();
+		totalVarietyTonnes = v.get("totalvarietyTonnes").toNumber();
+		exportVarietyTonnes = v.get("ExportvarietyTonnes").toNumber();
+		juiceVarietyTonnes = v.get("JuicevarietyTonnes").toNumber();
+		totalVarietyHectares = v.get("totalvarietyHectares").toNumber();
+		exportVarietyHectare = v.get("ExportvarietyHectares").toNumber();
+		juiceVarietyHectare = v.get("JuicevarietyHectares").toNumber();
+		varPct = v.get("percent").toNumber();
+		totalTPerH = if(totalVarietyHectares > 0,totalVarietyTonnes / totalVarietyHectares,0);
+		exportTPerH = if(exportVarietyHectare > 0,exportVarietyTonnes / exportVarietyHectare,0);
+		juiceTPerH = if(juiceVarietyHectare > 0,juiceVarietyTonnes / juiceVarietyHectare,0);
+		prevtotalVarietyBins = v.get("prevtotalvarietyBins").toNumber();
+		prevexportVarietyBins = v.get("prevExportvarietyBins").toNumber();
+		prevjuiceVarietyBins = v.get("prevJuicevarietyBins").toNumber();
+		prevtotalVarietyTonnes = v.get("prevtotalvarietyTonnes").toNumber();
+		prevexportVarietyTonnes = v.get("prevExportvarietyTonnes").toNumber();
+		prevjuiceVarietyTonnes = v.get("prevJuicevarietyTonnes").toNumber();
+		prevtotalVarietyHectares = v.get("prevtotalvarietyHectares").toNumber();
+		prevexportVarietyHectare = v.get("prevExportvarietyHectares").toNumber();
+		prevjuiceVarietyHectare = v.get("prevJuicevarietyHectares").toNumber();
+		LastprevtotalVarietyTonnes = v.get("LastprevtotalvarietyTonnes").toNumber();
+		prevtotalTPerH = if(prevtotalVarietyHectares > 0,prevtotalVarietyTonnes / prevtotalVarietyHectares,0);
+		prevexportTPerH = if(prevexportVarietyHectare > 0,prevexportVarietyTonnes / prevexportVarietyHectare,0);
+		prevjuiceTPerH = if(prevjuiceVarietyHectare > 0,prevjuiceVarietyTonnes / prevjuiceVarietyHectare,0);
+		yearbyyear = 0.0;
+		prevyearbyyear = 0.0;
+		if(prevtotalVarietyTonnes > 0)
+		{
+			yearbyyear = (totalVarietyTonnes - prevtotalVarietyTonnes) / prevtotalVarietyTonnes * 100;
+		}
+		if(LastprevtotalVarietyTonnes > 0)
+		{
+			prevyearbyyear = (prevtotalVarietyTonnes - LastprevtotalVarietyTonnes) / LastprevtotalVarietyTonnes * 100;
+		}
+		%>
+<div class="variety-stats-block">
+      <!-- Variety Name -->
+      <div class="variety-block-header"><%=varName%></div>
+      <!-- Hectares + % of apples -->
+      <div class="variety-block-subheader">
+        <%=totalVarietyHectares.round(2)%> HECTARES | <%=varPct.round(2)%>% OF APPLES
+      </div>
+      <br>
+      <!-- Stats row (like your screenshot) -->
+      <div class="stats-row">
+        <!-- TOTAL BINS -->
+        <div class="stat-col">
+          <div class="total stat-label">TOTAL BINS</div>
+          <div class="total stat-value"><%=totalVarietyBins%></div>
+          <div class="total stat-subvalue">PREVIOUS <%=prevtotalVarietyBins%></div>
+        </div>
+        <!-- TONNES/HECTARE (TOTAL) -->
+        <div class="stat-col">
+          <div class="total stat-label">TONNES/HECTARE</div>
+          <div class="total stat-value"><%=totalTPerH.round(2)%></div>
+          <div class="total stat-subvalue">PREVIOUS <%=prevtotalTPerH.round(2)%></div>
+        </div>
+        <!-- Y/Y CHANGE (placeholder) -->
+        <div class="stat-col">
+          <div class="total stat-label">Y/Y CHANGE</div>
+          <div class="total stat-value"><%=yearbyyear.round(2)%>%</div>
+          <div class="total stat-subvalue">PREVIOUS <%=prevyearbyyear.round(2)%>%</div>
+        </div>
+        <!-- EXPORT BINS -->
+        <div class="export stat-col">
+          <div class="export stat-label">EXPORT BINS</div>
+          <div class="export stat-value"><%=exportVarietyBins%></div>
+          <div class="export stat-subvalue">PREVIOUS <%=prevexportVarietyBins%></div>
+        </div>
+        <!-- TONNES/HECTARE (EXPORT) -->
+        <div class="export stat-col">
+          <div class="export stat-label">TONNES/HECTARE (EXP)</div>
+          <div class="export stat-value"><%=exportTPerH.round(2)%></div>
+          <div class="export stat-subvalue">PREVIOUS <%=prevexportTPerH.round(2)%></div>
+        </div>
+        <!-- JUICE BINS -->
+        <div class="juice stat-col">
+          <div class="juice stat-label">JUICE BINS</div>
+          <div class="juice stat-value"><%=juiceVarietyBins%></div>
+          <div class="juice stat-subvalue">PREVIOUS <%=prevjuiceVarietyBins%></div>
+        </div>
+        <!-- TONNES/HECTARE (JUICE) -->
+        <div class="juice stat-col">
+          <div class="juice stat-label">TONNES/HECTARE (JUICE)</div>
+          <div class="juice stat-value"><%=juiceTPerH.round(2)%></div>
+          <div class="juice stat-subvalue">PREVIOUS <%=prevjuiceTPerH.round(2)%></div>
+        </div>
+      </div>
+    </div>
+	<br>
+<%
+	}
+	%>
+</div>
+</body>
+</html>
+<%
+
+}%>

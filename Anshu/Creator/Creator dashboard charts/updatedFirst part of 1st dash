@@ -1,0 +1,554 @@
+<%{
+	/* ------------------ Deluge Logic ------------------ */
+	furit = Fruit_Type[Fruit_Type == "Apples"];
+	if(input.varietal == null)
+	{
+		varietalList = "4563295000000030003";
+		varietalList = varietalList.toCollection();
+	}
+	else
+	{
+		varietalList = input.varietal.toCollection();
+	}
+	if(input.year1 == null)
+	{
+		yearList = "2025";
+		yearList = yearList.toCollection();
+	}
+	else
+	{
+		yearList = input.year1.toCollection();
+	}
+	// 	yearCount = yearList.size();
+	//Graph 1 previous year calculation
+	prevTotal = 0.0;
+	prevJuice = 0.0;
+	prevExport = 0.0;
+	smallestYear = 100000;
+	for each  small in yearList
+	{
+		yearr = small.toNumber();
+		if(yearr < smallestYear)
+		{
+			smallestYear = yearr;
+		}
+	}
+	i = 1;
+	for each  rec in yearList
+	{
+		smallestYear = smallestYear - i;
+		year3 = smallestYear.toString();
+		localTotal = 0;
+		localExport = 0;
+		localJuice = 0;
+		firstDate = ("01-Jan-" + year3).toDate();
+		lastDate = ("01-Dec-" + (year3.toNumber() + 1).toString()).toDate().addDay(-1);
+		for each  rec in varietalList
+		{
+			allBins = Capture_Form[Varietal1 == rec.toNumber() && Fruit_Type == furit.ID && Date_Picked >= firstDate && Date_Picked <= lastDate];
+			exportBins = Capture_Form[Varietal1 == rec.toNumber() && Fruit_Type == furit.ID && Date_Picked >= firstDate && Date_Picked <= lastDate && Grade_Pears_Apples == "Export"];
+			juiceBins = Capture_Form[Varietal1 == rec.toNumber() && Fruit_Type == furit.ID && Date_Picked >= firstDate && Date_Picked <= lastDate && Grade_Pears_Apples == "Juice"];
+			localTotal = localTotal + allBins.count();
+			localExport = localExport + exportBins.count();
+			localJuice = localJuice + juiceBins.count();
+		}
+		prevTotal = prevTotal + localTotal;
+		prevJuice = prevJuice + localJuice;
+		prevExport = prevExport + localExport;
+		i = i + 1;
+	}
+	//previous year calculatioon end
+	// Graph 2 Previous year calculation
+	PrevoverallExportPerc = 0.0;
+	PrevoverallJuicePerc = 0.0;
+	if(prevTotal > 0)
+	{
+		PrevoverallExportPerc = round(prevExport.toNumber() / prevTotal * 100,1);
+		PrevoverallJuicePerc = round(prevJuice.toNumber() / prevTotal * 100,1);
+	}
+	// Graph 2 Previous year calculation end 
+	sum = 0;
+	sum2 = 0;
+	juiceSum = 0;
+	yearData = List();
+	// 1) Gather bins for each year + selected varietals
+	for each  year4 in yearList
+	{
+		localTotal = 0;
+		localExport = 0;
+		localJuice = 0;
+		firstDate = ("01-Jan-" + year4).toDate();
+		lastDate = ("01-Dec-" + (year4.toNumber() + 1).toString()).toDate().addDay(-1);
+		for each  rec in varietalList
+		{
+			allBins = Capture_Form[Varietal1 == rec.toNumber() && Fruit_Type == furit.ID && Date_Picked >= firstDate && Date_Picked <= lastDate];
+			exportBins = Capture_Form[Varietal1 == rec.toNumber() && Fruit_Type == furit.ID && Date_Picked >= firstDate && Date_Picked <= lastDate && Grade_Pears_Apples == "Export"];
+			juiceBins = Capture_Form[Varietal1 == rec.toNumber() && Fruit_Type == furit.ID && Date_Picked >= firstDate && Date_Picked <= lastDate && Grade_Pears_Apples == "Juice"];
+			localTotal = localTotal + allBins.count();
+			localExport = localExport + exportBins.count();
+			localJuice = localJuice + juiceBins.count();
+		}
+		sum = sum + localTotal;
+		sum2 = sum2 + localExport;
+		juiceSum = juiceSum + localJuice;
+		mp = Map();
+		mp.put("year",year4);
+		mp.put("total",localTotal);
+		mp.put("export",localExport);
+		mp.put("juice",localJuice);
+		yearData.add(mp);
+	}
+	// 2) Determine dynamic max for the first chart
+	dynamicMax = 0;
+	for each  yr in yearData
+	{
+		if(yr.get("total") > dynamicMax)
+		{
+			dynamicMax = yr.get("total");
+		}
+		if(yr.get("export") > dynamicMax)
+		{
+			dynamicMax = yr.get("export");
+		}
+		if(yr.get("juice") > dynamicMax)
+		{
+			dynamicMax = yr.get("juice");
+		}
+	}
+	if(dynamicMax == 0)
+	{
+		dynamicMax = 1;
+	}
+	containerHeight = 300;
+	// scaling factor in pixels
+	// 3) Compute pixel heights for the first chart (counts) and second chart (percentages)
+	for each  yr2 in yearData
+	{
+		totalPx = yr2.get("total").toNumber() / dynamicMax * containerHeight;
+		exportPx = yr2.get("export").toNumber() / dynamicMax * containerHeight;
+		juicePx = yr2.get("juice").toNumber() / dynamicMax * containerHeight;
+		yr2.put("totalPx",totalPx);
+		yr2.put("exportPx",exportPx);
+		yr2.put("juicePx",juicePx);
+		yearTotal = yr2.get("total").toNumber();
+		if(yearTotal == 0)
+		{
+			yearTotal = 1;
+		}
+		exportPerc = yr2.get("export").toNumber() / yearTotal * 100;
+		juicePerc = yr2.get("juice").toNumber() / yearTotal * 100;
+		exportPxPerc = exportPerc / 100 * containerHeight;
+		juicePxPerc = juicePerc / 100 * containerHeight;
+		yr2.put("exportPerc",exportPerc);
+		yr2.put("juicePerc",juicePerc);
+		yr2.put("exportPxPerc",exportPxPerc);
+		yr2.put("juicePxPerc",juicePxPerc);
+	}
+	// 4) Overall Export vs Juice percentages
+	grandTotal = sum2 + juiceSum;
+	if(grandTotal == 0)
+	{
+		grandTotal = 1;
+	}
+	overallExportPerc = round(sum2.toNumber() / grandTotal * 100,1);
+	overallJuicePerc = round(juiceSum.toNumber() / grandTotal * 100,1);
+	// 5) Y-axis labels for the first chart (counts)
+	steps = 5;
+	yLabelsCount = List();
+	idxList = {0,1,2,3,4,5};
+	for each  i in idxList
+	{
+		lblVal = (dynamicMax - i * dynamicMax / steps).round(0);
+		yLabelsCount.add(lblVal);
+	}
+	// 6) Y-axis labels for the second chart (percentages)
+	yLabelsPerc = List();
+	for each  i in idxList
+	{
+		lblValPerc = (100 - i * 100 / steps).round(0);
+		yLabelsPerc.add(lblValPerc);
+	}
+	%>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Compact Apple Data Dashboard</title>
+  <style>
+    /* Global Styles */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+	  
+    }
+   body {
+     background-color: #C1C4C9;
+      color: #000;
+      padding: 10px;
+    }
+    .ans-main-title, .ans-sub-title {
+      text-align: center;
+      font-weight: bold;
+      
+    }
+    .ans-main-title {
+		
+	font-size: 35px;
+	font-weight:bolder;
+	background-color: #C1C4C9;
+	}
+	
+    .ans-sub-title  { 
+	font-size: 35px;
+	font-weight:bolder;
+	background-color: #C1C4C9;
+	}
+    
+    /* Metrics Section */
+    .ans-metrics-container {
+      display: flex;
+      justify-content: space-around;
+     
+      text-align: center;
+	  height:200px;
+	   background-color: #C1C4C9;
+	   
+    }
+    .ans-metric-box {
+      flex: 1;
+      padding: 5px;
+	  margin-top:50px;
+      max-width: 180px;
+	  max-height:100px;
+	   background-color: #C1C4C9;
+    }
+    .ans-metric-title { font-size: 16px; margin-bottom: 3px;font-weight: bold; }
+    .ans-metric-value { font-size: 32px; font-weight: bold; margin-bottom: 2px; }
+    .ans-previous-year { font-size: 12px;font-weight: bold; }
+    
+    /* Legend */
+    .ans-legend {
+      display: flex;
+      justify-content: center;
+     
+	  
+    }
+    .ans-legend-item {
+      display: flex;
+      align-items: center;
+      margin: 0 5px;
+    }
+    .ans-legend-color{
+      width: 20px;
+      height: 20px;
+      margin-right: 5px;
+	  border-radius:50%;
+    }
+    
+    /* Chart Wrapper */
+    .ans-chart-wrapper {
+//       margin-bottom: 20px;
+	  background-color: #C1C4C9;
+	  margin-top:0;
+	  width:100%;
+	  height:400px;
+	  padding-top:20px;
+	  padding-left:60px;
+	  padding-right:60px;
+	 
+
+    }
+    
+    /* Bars Row */
+    .ans-bars-row {
+      position: relative;
+      display: flex;
+      align-items: flex-end;
+      border-bottom: 1px solid #999;
+      min-height: 300px;
+      padding-bottom: 5px;
+	  margin-top:50px;
+	   
+    }
+    .ans-y-axis {
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      font-size: 10px;
+      color: #333;
+      padding-right: 5px;
+    }
+    
+    /* Year Group */
+    .ans-year-group {
+      flex: 0 0 70px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-left: 20px;
+      position: relative;
+      justify-content: flex-end;
+      height: 100%;
+    }
+    .ans-year-group:first-child { margin-left: 0; }
+    
+    /* Bar Container & Bars */
+    .ans-bar-container {
+      display: flex;
+      align-items: flex-end;
+    }
+    .ans-bar, .ans-bar-perc {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 25px;
+      margin: 0 2px;
+      position: relative;
+    }
+    .ans-bar span, .ans-bar-perc span {
+      font-size: 10px;
+      color: #fff;
+    }
+    
+    /* Year Label */
+    .ans-year-label {
+      position: absolute;
+      bottom: -20px;
+      width: 100%;
+      text-align: center;
+      font-size: 10px;
+      white-space: nowrap;
+    }
+	
+	.rotated-text {
+  transform: rotate(-90deg);
+  transform-origin: left top;
+  white-space: nowrap;
+}
+    
+    /* Colors */
+    .ans-total-bar { background-color: #4d3c43; }
+    .ans-export-bar { background-color: #4a6c5d; }
+    .ans-juice-bar  { background-color: #a05a2c; }
+    
+    /* Stacked Bar for Second Graph */
+    .ans-stacked-bar {
+      display: flex;
+      flex-direction: column;
+      width: 25px;
+    }
+    
+    /* Footer */
+    .ans-footer {
+      text-align: center;
+      font-weight: bold;
+      font-size: 16px;
+     background-color: #C1C4C9;
+    }
+    
+    /* Hide separate labels row */
+    .ans-labels-row {
+      display: none;
+    }
+    .ans-legend{
+		background-color: #C1C4C9;
+	}
+	
+	//updated
+	.extend2{
+		width:100%;
+		background-color: #C1C4C9;
+		height:500px;
+		margin-top:0;
+		
+	}
+	.extend3{
+		width:100%;
+		background-color: #C1C4C9;
+		    height: 100px;
+    margin-top: 0px;
+	}
+  </style>
+</head>
+<body>
+  
+  <!-- COUNT CHART (First Graph) -->
+  <div class="ans-main-title">TOTAL NUMBER OF BINS FOR ALL VARIETALS</div>
+  
+  <!-- Metrics (Count Chart) -->
+  <div class="ans-metrics-container">
+    <div class="ans-metric-box">
+      <div class="ans-metric-title">TOTAL APPLE BINS</div>
+      <div class="ans-metric-value"><%=sum%></div>
+      <div class="ans-previous-year">PREVIOUS PERIOD <%=prevTotal%></div>
+    </div>
+    <div class="ans-metric-box">
+      <div class="ans-metric-title" style="color:#4a6c5d;">EXPORT BINS</div>
+      <div class="ans-metric-value" style="color:#4a6c5d;"><%=sum2%></div>
+      <div class="ans-previous-year" style="color:#4a6c5d;">PREVIOUS PERIOD <%=prevExport%></div>
+    </div>
+    <div class="ans-metric-box">
+      <div class="ans-metric-title" style="color:#a05a2c;">JUICE BINS</div>
+      <div class="ans-metric-value" style="color:#a05a2c;"><%=juiceSum%></div>
+      <div class="ans-previous-year" style="color:#a05a2c;">PREVIOUS PERIOD <%=prevJuice%></div>
+    </div>
+  </div>
+  
+  <!-- Legend for Count Chart -->
+  <div class="extend">
+  <div class="ans-legend">
+    <div class="ans-legend-item">
+      <div class="ans-legend-color ans-total-bar"></div>
+      <div style="font-weight:bolder; font-size:13px;">Total Bins</div>
+    </div>
+    <div class="ans-legend-item">
+      <div class="ans-legend-color ans-export-bar"></div>
+      <div style="font-weight:bolder; font-size:13px;">Export Bins</div>
+    </div>
+    <div class="ans-legend-item">
+      <div class="ans-legend-color ans-juice-bar"></div>
+      <div style="font-weight:bolder; font-size:13px;">Juice Bins</div>
+    </div>
+  </div>
+    </div>
+  
+
+  <!-- Chart Wrapper for Count Chart -->
+
+  <div class="ans-chart-wrapper">
+    <div class="extend2">
+    <div class="ans-bars-row">
+      <!-- Y-axis for Count Chart -->
+      <div class="ans-y-axis">
+<%
+	for each  lbl in yLabelsCount
+	{
+		%>
+<div><%=lbl%></div>
+<%
+	}
+	%>
+</div>
+<%
+	if(yearData.size() > 0)
+	{
+		for each  yr8 in yearData
+		{
+			%>
+<div class="ans-year-group">
+        <div class="ans-bar-container">
+          <div class="ans-bar ans-total-bar" style="height:<%=yr8.get("totalPx")%>px;">
+            <span class="rotated-text"><%=yr8.get("total")%></span>
+          </div>
+          <div class="ans-bar ans-export-bar" style="height:<%=yr8.get("exportPx")%>px;">
+            <span class="rotated-text"><%=yr8.get("export")%></span>
+          </div>
+          <div class="ans-bar ans-juice-bar" style="height:<%=yr8.get("juicePx")%>px;">
+            <span class="rotated-text"><%=yr8.get("juice")%></span>
+          </div>
+        </div>
+        <div class="ans-year-label"><%=yr8.get("year")%></div>
+      </div>
+<%
+		}
+	}
+	else
+	{
+		%>
+<p style="color:red; font-size:10px;">No data available for the selected year(s) or varietal(s).</p>
+<%
+	}
+	%>
+</div>
+  </div>
+  </div>
+ <div class="extend3">
+  <div class="ans-footer">YEAR / YEAR BIN TOTAL COMPARISON</div>
+  </div>
+  
+ <!-- PERCENTAGE CHART (Second Graph) -->
+<div class="ans-sub-title">PERCENTAGE SPLIT EXPORT VS JUICE</div>
+
+<!-- Metrics (Percentage Chart) -->
+<div class="ans-metrics-container">
+  <div class="ans-metric-box">
+    <div class="ans-metric-title" style="color:#4a6c5d;">TOTAL FOR EXPORT</div>
+    <div class="ans-metric-value" style="color:#4a6c5d;"><%=overallExportPerc%>%</div>
+    <div class="ans-previous-year" style="color:#4a6c5d;">PREVIOUS PERIOD <%=PrevoverallExportPerc%>%</div>
+  </div>
+  <div class="ans-metric-box">
+    <div class="ans-metric-title" style="color:#a05a2c;">TOTAL FOR JUICE</div>
+    <div class="ans-metric-value" style="color:#a05a2c;"><%=overallJuicePerc%>%</div>
+    <div class="ans-previous-year" style="color:#a05a2c;">PREVIOUS PERIOD <%=PrevoverallJuicePerc%>%</div>
+  </div>
+</div>
+
+<!-- Legend for Percentage Chart -->
+<div class="ans-legend">
+  <div class="ans-legend-item">
+    <div class="ans-legend-color ans-export-bar"></div>
+    <div style="font-weight:bolder; font-size:13px;">Export %</div>
+  </div>
+  <div class="ans-legend-item">
+    <div class="ans-legend-color ans-juice-bar"></div>
+    <div style="font-weight:bolder; font-size:13px;">Juice %</div>
+  </div>
+</div>
+
+<!-- Chart Wrapper for Percentage Chart -->
+<div class="ans-chart-wrapper">
+  <div class="extend2">
+    <div class="ans-bars-row">
+      <!-- Y-axis for Percentage Chart -->
+      <div class="ans-y-axis">
+        <%
+          for each lbl in yLabelsPerc {
+        %>
+          <div><%=lbl%></div>
+        <%
+          }
+        %>
+      </div>
+      <%
+        if(yearData.size() > 0) {
+          for each yr9 in yearData {
+      %>
+      <div class="ans-year-group">
+        <div class="ans-stacked-bar">
+          <div class="ans-bar-perc ans-juice-bar" style="height:<%=yr9.get("juicePxPerc")%>px;">
+            <span class="rotated-text"><%=yr9.get("juicePerc").round(0)%>%</span>
+          </div>
+          <div class="ans-bar-perc ans-export-bar" style="height:<%=yr9.get("exportPxPerc")%>px;">
+            <span class="rotated-text"><%=yr9.get("exportPerc").round(0)%>%</span>
+          </div>
+        </div>
+        <div class="ans-year-label"><%=yr9.get("year")%></div>
+      </div>
+      <%
+          }
+        } else {
+      %>
+      <p style="color:red; font-size:10px;">No data available for the selected year(s) or varietal(s).</p>
+      <%
+        }
+      %>
+    </div>
+  </div>
+</div>
+
+<!-- Footer for Second Graph -->
+<div class="extend3">
+  <div class="ans-footer">YEAR / YEAR EXPORT VS JUICE % SPLIT COMPARISON</div>
+</div>
+
+</body>
+</html>
+<%
+
+}%>

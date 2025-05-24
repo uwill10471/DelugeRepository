@@ -1,0 +1,37 @@
+if(input.Upload_Publisher != "")
+{
+	// Define the URL of the API
+	fileContent = input.Upload_Publisher.content;
+	rowsList = fileContent.toList("\n");
+	input.VENDOR_DETAILS1.clear();
+	for each  row in rowsList
+	{
+		index = rowsList.indexOf(row);
+		if(index != 0)
+		{
+			// 			// Skip header
+			elementsList = row.toList(",");
+			// 			info elementsList.size();
+			if(elementsList.size() >= 6)
+			{
+				// 				// Prevent out-of-bound access
+				VENDOR_DETAILS1Row = Bulk_Release_Order.VENDOR_DETAILS1();
+				VENDOR_DETAILS1Row.DAVP_Code1=elementsList.get(0);
+				VENDOR_DETAILS1Row.PUBLICATION_NAME=elementsList.get(1);
+				VENDOR_DETAILS1Row.EDITION=elementsList.get(2);
+				VENDOR_DETAILS1Row.LANGUAGE=elementsList.get(3);
+				VENDOR_DETAILS1Row.RATE=elementsList.get(4);
+				VENDOR_DETAILS1Row.KEY_NO=elementsList.get(5);
+				input.VENDOR_DETAILS1.insert(VENDOR_DETAILS1Row);
+			}
+			else
+			{
+				info "Skipped row due to insufficient data: " + elementsList;
+			}
+		}
+	}
+}
+else
+{
+	// 	input.Items_Details.clear();
+}

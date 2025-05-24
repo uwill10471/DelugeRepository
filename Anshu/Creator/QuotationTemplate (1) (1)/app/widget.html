@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Acknowledgement</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
+    <script src="https://unpkg.com/html2pdf.js@0.10.1/dist/html2pdf.bundle.min.js"></script>
+    <script src="https://cdn.convertapi.com/convertapi-js/1.1/convertapi.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Aptos:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            font-family: 'Aptos', sans-serif !important;
+        }
+        
+        .terms-table {
+            width: 100%;
+            margin: 20px 0;
+            border: 1px solid black;
+        }
+        
+        .terms-row {
+            display: flex;
+           
+        }
+        
+        
+        .terms-cell {
+            padding: 8px 12px;
+            
+            vertical-align: middle;
+            flex: 0 0 auto;
+        }
+        
+        .terms-cell:last-child {
+           
+            flex: 1;
+        }
+        
+        .value-cell {
+            
+            flex: 1;
+        }
+        
+        .header-row .terms-cell {
+            background-color: #f5f5f5;
+            font-weight: 600;
+            text-align: center;
+        }
+        
+        .terms-cell:first-child {
+            font-weight: 500;
+            text-align: left;
+            width: 15%;
+        }
+        
+        .terms-cell:nth-child(2) {
+            text-align: left;
+            width: 45%;
+        }
+        
+        .terms-cell:last-child {
+            text-align: left;
+            width: 40%;
+        }
+        
+        .sourceofsupply,
+        .exworks,
+        .paymentterms,
+        .preparedby {
+            font-weight: 500;
+        }
+    </style>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.8.0/xlsx.js"></script>
+    <script src="https://js.zohostatic.com/creator/widgets/version/1.0/widgetsdk-min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+    
+</head>
+<body>
+    <button class="print-button" onclick="helper()">Print</button>
+    <button class="print-button1" onclick="downloadAsWord()">Download as Word</button>
+  <button class="print-button2" onclick="downloadExcel()">Download Excel</button>
+    <!-- This is the original header template that will be cloned -->
+    <div id="header-template" style="display: none;">
+        <div class="header">
+            <div class="company-info">
+                <h2>MARINETECH SHIP SPARES LLC</h2>
+                <p>115, Dubai Maritime City</p>
+                <p>PO Box 50512, Dubai, UAE</p>
+                <p>t: +971 44291350 / 44291351</p>
+                <p>sales@marinetechdubai.com</p>
+                <p>www.marinetechdubai.com</p>
+            </div>
+            <div class="logo-container">
+                <img src="logo.png" alt="" srcset="">
+            </div>
+        </div>
+
+        <div class="dual-tables">
+            <table style="border-left:1px solid black;" class="left-table-html" cellpadding="0" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th style="height:35px; font-size:14px; text-align:left; border-bottom:1px solid black;" colspan="2">MSC
+                            SHIP MANAGEMENT</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="label" style="border-bottom:1px solid #ccc; border-right:1px solid #ccc;">COUNTRY</td>
+                        <td class="value" style="border-bottom:1px solid #ccc; border-left:1px solid #ccc;" id="header-customer-country">SINGAPORE</td>
+                    </tr>
+                    <tr>
+                        <td class="label" style="border-bottom:1px solid #ccc; border-right:1px solid #ccc;">ATTN</td>
+                        <td class="value" style="border-bottom:1px solid #ccc; border-left:1px solid #ccc;" id="header-customer-attention">MR. JOHN SMITH
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="label" style="border-bottom:1px solid #ccc; border-right:1px solid #ccc;">CUSTOMER REF</td>
+                        <td class="value" style="border-bottom:1px solid #ccc; border-left:1px solid #ccc;" id="header-customer-po">PO-22567</td>
+                    </tr>
+                    <tr>
+                        <td class="label" style="border-bottom:1px solid #ccc; border-right:1px solid #ccc;">VESSEL</td>
+                        <td class="value" style="border-bottom:1px solid #ccc; border-left:1px solid #ccc;" id="header-customer-vessel">MSC AURORA</td>
+                    </tr>
+                    <tr>
+                        <td class="label" style="border-bottom:1px solid #ccc; border-right:1px solid #ccc;">EQUIPMENT</td>
+                        <td class="value" style="border-bottom:1px solid #ccc; border-left:1px solid #ccc;" id="header-customer-equipment">MAIN ENGINE</td>
+                    </tr>
+                    <tr>
+                        <td class="label" style="border-bottom:1px solid #ccc; border-right:1px solid #ccc;">MAKE</td>
+                        <td class="value" style="border-bottom:1px solid #ccc; border-left:1px solid #ccc;" id="header-customer-make">WARTSILA</td>
+                    </tr>
+                    <tr>
+                        <td class="label" style="border-right:1px solid #ccc;">TYPE</td>
+                        <td class="value" style="border-left:1px solid #ccc;">COMPLETE TYPE</td>
+                    </tr>
+                </tbody>
+            </table>
+        
+            <table class="right-table-html" cellpadding="0" cellspacing="0">
+                <thead>
+                    <tr>
+                        <th style="text-align:center; font-size:16px; height:35px; border-bottom:1px solid black;" colspan="2">
+                            ORDER <br> ACKNOWLEDGEMENT</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="empty-row">
+                        <td class="label-empty" style="border-right:none; border-bottom:1px solid #ccc;"></td>
+                        <td class="value-empty" style="border-left:none; border-bottom:1px solid #ccc;"></td>
+                    </tr>
+                    <tr>
+                        <td class="label" style="font-weight:bold; border-bottom:1px solid #ccc; border-right:1px solid #ccc;">OUR REF</td>
+                        <td class="value" style="font-weight:bold; border-bottom:1px solid #ccc; border-left:1px solid #ccc;" id="header-order-ref">
+                            MT/OA/2023/1075</td>
+                    </tr>
+                    <tr>
+                        <td class="label" style="border-bottom:1px solid #ccc; border-right:1px solid #ccc;">DATE</td>
+                        <td class="value" style="border-bottom:1px solid #ccc; border-left:1px solid #ccc;" id="header-order-date">24/03/2023</td>
+                    </tr>
+                    <tr>
+                        <td class="label" style="border-bottom:1px solid #ccc; border-right:1px solid #ccc;">TRN NO:</td>
+                        <td class="value" style="border-bottom:1px solid #ccc; border-left:1px solid #ccc;" id="header-order-trn">100600947400003</td>
+                    </tr>
+                    <tr>
+                        <td class="label" style="border-bottom:1px solid #ccc; border-right:1px solid #ccc;">OUR CONTACT:</td>
+                        <td class="value" style="border-bottom:1px solid #ccc; border-left:1px solid #ccc;" id="header-order-contact">IRSHAD MALWI</td>
+                    </tr>
+                    <tr>
+                        <td class="label" style="border-bottom:1px solid #ccc; border-right:1px solid #ccc;">CURRENCY</td>
+                        <td class="value" style="border-bottom:1px solid #ccc; border-left:1px solid #ccc;" id="header-order-currency">USD</td>
+                    </tr>
+                    <tr>
+                        <td class="label" style="border-right:1px solid #ccc;">PAGE</td>
+                        <td class="value" style="border-left:1px solid #ccc;" id="header-order-page">1 OF 1</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        
+        <p class="intro-text">Thank you for your enquiry. We are pleased to submit our offer as below:</p>
+    </div>
+
+    <!-- Preview container for A4 pages -->
+    <div class="preview-container" id="preview-container">
+        <!-- Pages will be dynamically added here -->
+    </div>
+
+    <!-- Hidden original content -->
+    <div style="display: none;">
+        <div class="doc-container">
+            <div class="header-container">
+                <div class="header">
+                <div class="company-info">
+                    <h2 style="color: #0072bc;">MARINETECH SHIP SPARES LLC</h2>
+                    <p style="color:black;">115, Dubai Maritime City</p>
+                    <p style="color:black;">PO Box 50512, Dubai, UAE</p>
+                    <p style="color:black;">t: +971 44291350 / 44291351</p>
+                    <p style="color:black;">sales@marinetechdubai.com</p>
+                    <p style="color:black;">www.marinetechdubai.com</p>
+                </div>
+
+                    <div class="logo-container">
+                    <img src="logo.png" alt="" srcset="">
+                    </div>
+                </div>
+
+                <div class="dual-tables">
+                    <table class="left-table-html" cellpadding="0" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th colspan="2" id="customer-country"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="label">COUNTRY</td>
+                                <td class="value">Dubai</td>
+                            </tr>
+                            <tr>
+                                <td class="label">ATTN</td>
+                                <td class="value" id="customer-attention"></td>
+                            </tr>
+                            <tr>
+                                <td class="label">CUSTOMER REF</td>
+                                <td class="value" id="customer-po"></td>
+                            </tr>
+                            <tr>
+                                <td class="label">VESSEL</td>
+                                <td class="value" id="customer-vessel"></td>
+                            </tr>
+                            <tr>
+                                <td class="label">EQUIPMENT</td>
+                                <td class="value" id="customer-equipment"></td>
+                            </tr>
+                            <tr>
+                                <td class="label">MAKE</td>
+                                <td class="value" id="customer-make"></td>
+                            </tr>
+                            <tr>
+                                <td class="label">TYPE</td>
+                                <td class="value" id="customer-type">COMPLETE TYPE</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <table class="right-table-html" cellpadding="0" cellspacing="0">
+                        <thead>
+                            <tr>
+                                <th colspan="2">ORDER ACKNOWLEDGEMENT</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="empty-row">
+                                <td class="label-empty"></td>
+                                <td class="value-empty"></td>
+                            </tr>
+                            <tr>
+                                <td class="label">REF NO</td>
+                                <td class="value" id="order-ref"></td>
+                            </tr>
+                            <tr>
+                                <td class="label">DATE</td>
+                                <td class="value" id="order-date"></td>
+                            </tr>
+                            <tr>
+                                <td class="label">TRN NO</td>
+                                <td class="value" id="order-trn"></td>
+                            </tr>
+                            <tr>
+                                <td class="label">OUR CONTACT</td>
+                                <td class="value" id="order-contact"></td>
+                            </tr>
+                            <tr>
+                                <td class="label">CURRENCY</td>
+                                <td class="value " id="order-currency"></td>
+                            </tr>
+                            <tr>
+                                <td class="label">PAGE</td>
+                                <td class="value" id="order-page"></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <p class="intro-text">Thank you for your enquiry. We are pleased to submit our offer as below:</p>
+            </div>
+
+            <div class="content-container">
+                <table class="main-table" id="original-table">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Item</th>
+                            <th>P/N</th>
+                            <th>Qty</th>
+                            <th>Unit</th>
+                            <th>Unit Price</th>
+                            <th>Amount</th>
+                            <th style="text-align: right;">Delivery<br>Time</th>
+                            <th style="text-align: right;">Ex-<br>Works</th>
+                        </tr>
+                    </thead>
+                    <tbody id="items-table-body">
+                        
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- Footer content template -->
+        <div id="footer-template" style="padding-right: 6.5px;">
+            <p class="delivery-note">Delivery time mentioned in WORKING DAYS, Ex-Works Origin, excluding weekends and holidays. Transit time to Dubai will be extra.</p>
+
+            <div class="terms-table">
+                <div class="terms-row header-row">
+                    <div class="terms-cell" style="font-weight: 600; background-color: #f5f5f5;border-right:1px solid #f5f5f5;  border-bottom:1px solid black; ">Terms and condition</div>
+                    <div class="terms-cell value-cell terms-row" style="font-weight: 600; background-color: #f5f5f5;border-top: black; border-bottom:1px solid black;  border-left: 1px solid #f5f5f5; border-right: none;"></div>
+                    <div class="terms-cell" style="font-weight: 600;border-left: 1px solid #f5f5f5;border-top: black; border-bottom:1px solid black; background-color: #f5f5f5;">Remarks</div>
+                </div>
+                <div class="terms-row">
+                    <div class="terms-cell " style="border-bottom:1px solid lightgray; border-right:none;">Source of supply:</div>
+                    <div class="terms-cell value-cell sourceofsupply" style="border-left: none; border-bottom:1px solid lightgray; border-right:1px solid white;">Deepak</div>
+                    <div class="terms-cell" style="border-bottom:1px solid lightgray;"></div>
+                </div>
+                <div class="terms-row">
+                    <div class="terms-cell" style="border-bottom:1px solid lightgray; border-right:none;">Ex-works:</div>
+                    <div class="terms-cell value-cell exworks" style="border-left: 1px solid white; border-bottom:1px solid lightgray; border-right:1px solid white;">Deepak</div>
+                    <div class="terms-cell" style="border-bottom:1px solid lightgray;">Packing and delivery charges extra.</div>
+                </div>
+                <div class="terms-row">
+                    <div class="terms-cell" style="border-right:none; border-bottom:1px solid lightgray;">Payment terms:</div>
+                    <div class="terms-cell value-cell paymentterms" style="border-left: 1px solid white; border-bottom:1px solid lightgray; border-right:none;">Deepak</div>
+                    <div class="terms-cell" style="border-bottom:1px solid lightgray;">Credit is only subject to credit limit.</div>
+                </div>
+                <div class="terms-row">
+                    <div class="terms-cell" style=" border-right:none;">Prepared by:</div>
+                    <div class="terms-cell value-cell preparedby" style="border-left: 1px solid white;border-right:none;">Deepak</div>
+                    <div class="terms-cell"></div>
+                </div>
+            </div>
+
+            <div class="note-section">
+                <p><strong>Note:</strong></p>
+                <ul>
+                <li>Validity of the offer is 15 days, subject to unsold.</li>
+                <li>Above offer is excluding VAT charges, VAT will be applicable as per UAE FTA regulation.</li>
+                <li>Minimum order value is USD 500 or equivalent otherwise USD 50 will be charged as small order surcharge.</li>
+                <li><strong>For any item offered from other than UAE or INDIA stock, we can only arrange shipment through our forwarder
+                        and cannot handover shipment to customer forwarder at origin.</strong></li>
+                <li>Above offer is valid ONLY for all items being purchased with full quantity, unless otherwise price may change.</li>
+                <li>Any use of equipment manufacturer's brand or model name, product codes, part numbers or IMO numbers is for reference
+                    purposes only. Such use does not mean that parts are from genuine manufacturer, unless clearly mentioned as genuine.
+                </li>
+                <li>Cancellation of order will not be accepted in any condition, once order is confirmed.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/html-docx-js/dist/html-docx.js"></script>
+    <script src="script.js"></script>
+</body>
+</html> 
