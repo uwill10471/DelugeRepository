@@ -1,0 +1,37 @@
+SO = ifnull(input.PO_Number,null);
+pSO_ID = ifnull(input.Purchase_Id,null);
+if(SO != null && pSO_ID != null)
+{
+	BookCustomerInfo = zoho.books.getRecords("purchaseorders","","salesorder_number=" + SO + "&salesorder_id=" + input.Purchase_Id,"zbooks1");
+	// 	info BookCustomerInfo;
+	if(BookCustomerInfo.get("purchaseorders").length() == 0)
+	{
+		info "Purchase Order Not Found";
+	}
+	else
+	{
+		soID = BookCustomerInfo.get("purchaseorders").get(0).get("purchaseorder_id");
+		organizationID = "804843409";
+		pdfURL = "https://www.zohoapis.com/books/v3/purchaseorders/pdf?organization_id=" + organizationID + "&purchaseorder_ids=" + soID;
+		pdfFile = invokeurl
+		[
+			url :pdfURL
+			type :GET
+			connection:"zbooks1"
+		];
+// 		info pdfFile;
+		input.SalesOrder_File = pdfFile;
+		domain = "https://creator.zoho.com";
+		accountOwner = zoho.adminuser;
+		appName = "-application-version-2";
+		reportName = "All_Purchase_Orders";
+		fieldName = "SalesOrder_File";
+		fileName = input.SalesOrder_File;
+		fileURL = domain + "/" + accountOwner + "/" + appName + "/" + reportName + "/" + fieldName + "/download/" + fileName;
+		openUrl(fileURL,"new window");
+	}
+}
+else
+{
+	info "Please first create Purchase Order and then press this button ";
+}
