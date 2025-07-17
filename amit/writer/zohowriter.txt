@@ -1,0 +1,41 @@
+string button.uplaod(String dealId)
+{
+ dealRecord = zoho.crm.getRecordById("Deals", dealId);
+ info dealRecord;
+ 
+ dataMap = Map();
+ dataList = List();
+ subform = dealRecord.get("Hotel");
+ 
+ for each item in subform
+ {
+	hotelName = item.get("Hotel_Name");
+	checkOut = item.get("check_out_date");
+	person = item.get("no_of_person");
+	
+	RowData = Map();
+	RowData.put("Hotel.Hotel_Name" , hotelName);
+	RowData.put("Hotel.check_out_date" , checkOut);
+	RowData.put("Hotel.no_of_person", person);
+	
+	dataList.add(RowData);
+ }
+ 
+ dataMap.put("Hotel", dataList);
+ data = Map();
+ data.put("data", dataMap);
+ merge_details = Map();
+ merge_details.put("merge_data" , data);
+ 
+ output_settings = Map();
+  output_settings.put("doc_name","Student Grade");
+
+   optional_settings= Map();
+   
+    response = zoho.writer.v2.mergeAndStore("g35bn0fd81094857e45f2abb239b0a2b102a1", merge_details, output_settings, optional_settings, "zohowriter");
+	info response;
+ 
+	
+// 	info  response ;
+    return "";
+}
