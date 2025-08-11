@@ -1,0 +1,22 @@
+pincode = input.Search;
+input.Pin_Code1 = pincode;
+response = invokeurl
+[
+	url :"https://api.postalpincode.in/pincode/" + pincode
+	type :GET
+];
+postofff = response.getJSON("PostOffice");
+areaarray = list();
+for each  po in postofff
+{
+	namarea = po.getJSON("Name");
+	areaarray.add(namarea);
+}
+input.Area:ui.add(areaarray);
+address1 = postofff.get(0);
+country1 = address1.getJSON("Country");
+state1 = address1.getJSON("State");
+devision = address1.getJSON("Division");
+input.Country = country1;
+input.State = state1;
+input.Division = devision;

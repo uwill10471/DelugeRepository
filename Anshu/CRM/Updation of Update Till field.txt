@@ -1,0 +1,8 @@
+void automation.UpdationofUpdateTillField(Int leadVerificationId)
+{
+update_time = zoho.currenttime.addMinutes(2).toString("yyyy-MM-dd'T'HH:mm:ssXXX");
+putMap = Map();
+putMap.put("Update_Till",update_time);
+putMap.put("Valid_Till",'');
+updateRecord = zoho.crm.updateRecord("Lead_Verifications",leadVerificationId,putMap);
+}
